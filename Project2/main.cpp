@@ -1,8 +1,9 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	double a;
-	double b = a;
-	double z = b + 2.0;
+	int a = 2000;
+	char c = a;
+	int b = c;
+	cout << "c is " << b;
 
 	return 0;
 }
