@@ -1,10 +1,8 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	double mile1 = 0;
-	double mile2 = 0;
-	cout << "enter mile:\n";
-	cin >> mile1;
-	mile2 = mile1 * 1.609;
-	cout << "transfer to " << mile2 << "mile\n";
+	double int = 1;
+	double 8zl = 1；
+		double _s = 10l;
+	double* ss = 10;
 	return 0;
 }
