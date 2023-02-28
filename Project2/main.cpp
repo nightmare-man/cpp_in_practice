@@ -1,9 +1,7 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	int a = 2000;
-	char c = a;
-	int b = c;
-	cout << "c is " << b;
-
+	int a{ 200 };
+	char b{ a };
+	cout << b;
 	return 0;
 }
