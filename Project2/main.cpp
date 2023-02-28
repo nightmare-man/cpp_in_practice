@@ -1,8 +1,17 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	double int = 1;
-	double 8zl = 1；
-		double _s = 10l;
-	double* ss = 10;
-	return 0;
+	string number[5]{ "zero","one","two","three","four" };
+	string current{ "" };
+	while (cin >> current) {
+		bool find = false;
+		for (int i = 0; i < 5; i++) {
+			if (current == number[i]) {
+				cout << i<<"\n";
+				find = true;
+				break;
+			}
+			
+		}
+		if (!find) cout << "stupid computer\n";
+	}
 }
