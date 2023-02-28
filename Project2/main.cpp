@@ -1,12 +1,10 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	string first_name{ "" };
-	string receiver_name{ "" };
-	cout << "enter ur first name:";
-	cin >> first_name;
-	cout << "Hello," << first_name;
-	cout << "\nenter receiver:";
-	cin >> receiver_name;
-	cout << "Dear " << receiver_name;
+	double mile1 = 0;
+	double mile2 = 0;
+	cout << "enter mile:\n";
+	cin >> mile1;
+	mile2 = mile1 * 1.609;
+	cout << "transfer to " << mile2 << "mile\n";
 	return 0;
 }
