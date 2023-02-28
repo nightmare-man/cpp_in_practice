@@ -1,7 +1,12 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	int a{ 200 };
-	char b{ a };
-	cout << b;
+	string first_name{ "" };
+	string receiver_name{ "" };
+	cout << "enter ur first name:";
+	cin >> first_name;
+	cout << "Hello," << first_name;
+	cout << "\nenter receiver:";
+	cin >> receiver_name;
+	cout << "Dear " << receiver_name;
 	return 0;
 }
