@@ -1,9 +1,10 @@
 #include "../include/std_lib_facilities.h"
+int square(int x);
 int main() {
-	int i = 0;
-	while (i < 26) {
-		cout << char('a' + i) << " " << int('a' + i) << endl;
-		i++;
-	}
+	
+	cout << square(10);
 	return 0;
+}
+int square(int x) {
+	return x * x;
 }
