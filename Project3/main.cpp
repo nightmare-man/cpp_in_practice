@@ -1,13 +1,10 @@
 #include "../include/std_lib_facilities.h"
 int square(int x);
 int main() {
-	vector<string> words;
-	for (string tmp; cin >> tmp;) {
-		words.push_back(tmp);
-	}
-	sort(words);
-	for (int i = 0; i < words.size(); i++) {
-		if (i == 0 || words[i] != words[i - 1]) cout << words[i]<<" ";
+	int a = 0;
+	int b = 0;
+	while (cin >> a >> b) {
+		cout << "the smaller is:" << ((a < b) ? a : b) << " the larger is" << ((a < b) ? b : a);
 	}
 	return 0;
 }
