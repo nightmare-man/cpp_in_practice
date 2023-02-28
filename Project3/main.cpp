@@ -1,6 +1,8 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	cout << 5 / 2 << endl;
-	cout << 5.0 / 2;
+	double a = 5.0;
+	int b = int{ a };
+	//int c{ a };
+	cout << a << b;
 	return 0;
 }
