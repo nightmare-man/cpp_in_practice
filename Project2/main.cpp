@@ -1,10 +1,11 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	cout << "please enter ur first name:\n";
-	string first_name;
-	int age;
-	cin >> first_name >> age;
-	cout << "hello," << first_name << "!\n";
-	cout << "age is:" << age << "\n";
+	cout << "enter a float:\n";
+	int a;
+	cin >> a;
+	cout << "a==" << a
+		<< "\na+1==" << a + 1
+		<< "\nhalf of a==" << a / 2
+		<< "\nsqrt of a==" << sqrt(a);
 	return 0;
 }
