@@ -5,6 +5,4 @@ int main() {
 	cout << s1;
 	return 0;
 }
-int area(int lenght, int width) {
-	return lenght * width;
-}
+
