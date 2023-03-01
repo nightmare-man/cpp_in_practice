@@ -1,19 +1,21 @@
 #include "../include/std_lib_facilities.h"
-
+/// <summary>
+///  参数要求a>0 b>a c>b
+/// </summary>
+/// <param name="a"></param>
+/// <param name="b"></param>
+/// <param name="c"></param>
+/// <returns></returns>
+int my_complicated_function(int a, int b, int c) {
+	if (!(a > 0 && a < b && b < c)) error("bad arguments for mcf");
+	return 0;
+}
 int main() {
-	vector<double> temps;
-	for (double temp; cin >> temp;) temps.push_back(temp);
-	double sum = 0;
-	double high_temp = -1000;
-	double low_temp = 1000;
-	
-	for (int x : temps) {
-		if (x > high_temp) high_temp = x;
-		if (x < low_temp) low_temp = x;
-		sum += x;
+	try {
+		my_complicated_function(-1, 2, 3);
 	}
-	cout << "high temp " << high_temp << endl;
-	cout << "low temp " << low_temp << endl;
-	cout << "average temp " << sum / temps.size() << endl;
+	catch (exception &e) {
+		cout << "exception :" << e.what() << endl;
+	}
 	return 0;
 }
