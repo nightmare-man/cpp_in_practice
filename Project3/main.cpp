@@ -1,17 +1,15 @@
 #include "../include/std_lib_facilities.h"
 int square(int x);
 int main() {
-	vector<double> numbers;
+	vector<double> distance;
+	double sum = 0;
 	for (double tmp; cin >> tmp;) {
-		numbers.push_back(tmp);
+		distance.push_back(tmp);
+		sum += tmp;
 	}
-	double mid = 0;
-	int size = numbers.size();
-	sort(numbers);
-
-	if (size % 2 == 0) mid = (numbers[size / 2 - 1] + numbers[size / 2]) / 2;
-	else mid = numbers[size / 2];
-	cout << "mid is " << mid;
+	sort(distance);
+	cout << "total distance " << sum << " min distance " << distance[0] << " max distance "\
+		<< distance[distance.size() - 1] << " average distance " << sum / distance.size();
 	return 0;
 }
 int square(int x) {
