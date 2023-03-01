@@ -10,10 +10,23 @@ double ctok(double c) {
 	double k = c + min;
 	return k;
 }
+double ktoc(double k) {
+	constexpr double min = 273.15;
+	if (k < 0) error("wrong argument in ctok()\n");
+	double c = k- min;
+	return c;
+}
 int main() {
+	double k = 0;
+	cin >> k;
 	double c = 0;
-	cin >> c;
-	double k = ctok(c);
-	cout << k << '\n';
+	try {
+		c = ktoc(k);
+	}
+	catch (exception& e) {
+		cout << "exception: " << e.what() << endl;
+	}
+	
+	cout << c << '\n';
 	return 0;
 }
