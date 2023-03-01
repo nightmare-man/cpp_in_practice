@@ -1,33 +1,24 @@
 #include "../include/std_lib_facilities.h"
 int square(int x);
 int main() {
-	double source1 = 0;
-	double source2 = 0;
-	double result = 0;
-	char op = ' ';
-	cout << "enter two number and one operator + - * / %:\n";
-	cin >> source1 >> source2;
-	cin >> op;
-	switch (op)
-	{
-	case '+':
-		result = source1 + source2;
-		break;
-	case '-':
-		result = source1 - source2;
-		break;
-	case '*':
-		result = source1 * source2;
-		break;
-	case '/':
-		result = source1 / source2;
-		break;
-	case '%':
-		result = int(source1) % int(source2);
-	default:
-		break;
+	vector<string> number = { "zero","one","two","three","four"\
+	,"five","six","seven","eight","nine" };
+	string in = "";
+	while (cin >> in) {
+		if (in.length() > 1) {
+			for (int i = 0; i<number.size(); i++) {
+				if (number[i] == in) {
+					cout << i<<endl;
+					break;
+				}
+			}
+		}
+		else {
+			char a = in[0];
+			int x = a - '0';
+			cout << number[x]<<endl;
+		}
 	}
-	cout << source1 << " " << op << " " << source2 << " = " << result;
 	return 0;
 }
 int square(int x) {
