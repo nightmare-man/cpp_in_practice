@@ -1,13 +1,19 @@
 #include "../include/std_lib_facilities.h"
+class Bad_area {};
 int area(int lengh, int width);
 int framed_area(int lengh, int width);
 int main() {
-	int area1 = area(3, 0);
-	if (area1 <= 0) error("non-positive area");
+	try {
+		int area1 = area(3, 0);
+	}
+	catch (Bad_area) {
+		cout << "oops,bad arguments to area()";
+	}
+	
 	return 0;
 }
 int area(int lengh, int width) {
-	if (lengh <= 0 || width <= 0) return -1;
+	if (lengh <= 0 || width <= 0) throw Bad_area{};
 	return lengh * width;
 }
 int framed_area(int length, int width) {
