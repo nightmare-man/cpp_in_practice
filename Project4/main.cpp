@@ -3,10 +3,14 @@ class Bad_area {};
 double do_something();
 int main() {
 	try {
-		do_something();
+		//int x1 = narrow_cast<int>(2.9);
+		int x2 = narrow_cast<int>(2.0);
 	}
 	catch (exception& e) {
 		cerr << "runtime error:" << e.what() << endl;
+	}
+	catch (...) {
+		cerr << "unknow exception!\n";
 	}
 	
 	return 0;
