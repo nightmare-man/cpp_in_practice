@@ -3,10 +3,12 @@ int main() {
 	cout << "Expression:";
 	int lval, rval;
 	char op;
-	cin >> lval >> op >> rval;
+	cin >> lval;
 	int result;
-	switch (op) {
-	
+	bool end = false;
+	while (!end&&cin >> op >> rval) {
+		switch (op) {
+
 		case '+':
 			result = lval + rval;
 			break;
@@ -20,8 +22,10 @@ int main() {
 			result = lval / rval;
 			break;
 		default:
-			result = 0;
+			end = true;
 			break;
+		}
+		lval = result;
 	}
 	cout << "Result:" << result << endl;
 	return 0;
