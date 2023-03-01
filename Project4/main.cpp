@@ -1,23 +1,19 @@
 #include "../include/std_lib_facilities.h"
-class Bad_area {};
-double do_something();
+
 int main() {
-	try {
-		//int x1 = narrow_cast<int>(2.9);
-		int x2 = narrow_cast<int>(2.0);
-	}
-	catch (exception& e) {
-		cerr << "runtime error:" << e.what() << endl;
-	}
-	catch (...) {
-		cerr << "unknow exception!\n";
-	}
+	vector<double> temps;
+	for (double temp; cin >> temp;) temps.push_back(temp);
+	double sum = 0;
+	double high_temp = -1000;
+	double low_temp = 1000;
 	
+	for (int x : temps) {
+		if (x > high_temp) high_temp = x;
+		if (x < low_temp) low_temp = x;
+		sum += x;
+	}
+	cout << "high temp " << high_temp << endl;
+	cout << "low temp " << low_temp << endl;
+	cout << "average temp " << sum / temps.size() << endl;
 	return 0;
-}
-double do_something() {
-	double a = 0;
-	cin >> a;
-	if (!cin) error("couldn't read a double in main function\n");
-	return a;
 }
