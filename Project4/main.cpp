@@ -2,18 +2,12 @@
 int area(int lengh, int width);
 int framed_area(int lengh, int width);
 int main() {
-	int x = -1;
-	int y = 2;
-	int z = 4;
-	int area1 = area(x, y);
-	int area2 = framed_area(1, z);
-	int area3 = framed_area(y, z);
-	cout << area3;
-	double ratio = double(area1) / area3;
-	cout << ratio;
+	int area1 = area(3, 0);
+	if (area1 <= 0) error("non-positive area");
 	return 0;
 }
 int area(int lengh, int width) {
+	if (lengh <= 0 || width <= 0) return -1;
 	return lengh * width;
 }
 int framed_area(int length, int width) {
