@@ -1,20 +1,19 @@
 #include "../include/std_lib_facilities.h"
-
+/// <summary>
+/// c>=-273.15
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
+double ctok(double c) {
+	constexpr double min = 273.15;
+	if (c < -min) error("wrong argument in ctok()\n");
+	double k = c + min;
+	return k;
+}
 int main() {
-	try {
-		int x = 4; double d = 5.0/ (x - 2); if (d == 2+ 0.5) cout << "success\n";
-		keep_window_open();
-		return 0;
-	}
-	catch (exception& e) {
-		cerr << "error:" << e.what() << '\n';
-		keep_window_open();
-		return 1;
-	}
-	catch (...) {
-		cerr << "oops:unknow exception!\n";
-		keep_window_open();
-		return 2;
-	}
+	double c = 0;
+	cin >> c;
+	double k = ctok(c);
+	cout << k << '\n';
 	return 0;
 }
