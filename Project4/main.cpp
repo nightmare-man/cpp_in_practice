@@ -1,24 +1,19 @@
 #include "../include/std_lib_facilities.h"
 class Bad_area {};
-int area(int lengh, int width);
-int framed_area(int lengh, int width);
+double do_something();
 int main() {
 	try {
-		int area1 = area(3, 0);
+		do_something();
 	}
-	catch (Bad_area) {
-		cout << "oops,bad arguments to area()";
+	catch (exception& e) {
+		cerr << "runtime error:" << e.what() << endl;
 	}
 	
 	return 0;
 }
-int area(int lengh, int width) {
-	if (lengh <= 0 || width <= 0) throw Bad_area{};
-	return lengh * width;
-}
-int framed_area(int length, int width) {
-	constexpr int frame_width = 2;
-	if (length - frame_width <= 0 || width - frame_width <= 0)
-		error("non-positive area() called by framed_area()");
-	return (length - 2)*( width - 2);
+double do_something() {
+	double a = 0;
+	cin >> a;
+	if (!cin) error("couldn't read a double in main function\n");
+	return a;
 }
