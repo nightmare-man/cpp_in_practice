@@ -6,7 +6,9 @@ int main() {
 	cin >> lval;
 	int result;
 	bool end = false;
-	while (!end&&cin >> op >> rval) {
+	while (!end&&cin >> op) {
+		if (op == '=') break;
+		cin >> rval;
 		switch (op) {
 
 		case '+':
@@ -22,7 +24,7 @@ int main() {
 			result = lval / rval;
 			break;
 		default:
-			end = true;
+			result = 0;
 			break;
 		}
 		lval = result;
