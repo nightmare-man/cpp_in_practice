@@ -5,6 +5,7 @@ public:
 	double value;
 };
 Token get_token() {
+	//todo 构建token_stream 类而不是函数
 	char tmp = 'x';
 	string num = "";
 	Token t{ 'n',0 };
@@ -35,6 +36,7 @@ Token get_token() {
 				case '(':
 				case ')':
 				case '=':
+				case '%':
 					t.kind = tmp;
 					end = true;
 					tmp = ' ';
@@ -88,10 +90,20 @@ double EE1() {
 			left *= EE2();
 			t = get_token();
 			break;
-		case '/':
-			left /= EE2();
+		case '/': {
+			double d = EE2();
+			if (d == 0) error("divide by zero!\n");
+			left /= d;
 			t = get_token();
 			break;
+		}
+		case '%': {
+			left = int(left) % int(EE2());
+			t = get_token();
+			break;
+		}
+		
+			
 		default:
 			cin.putback(t.kind);
 			flag = false;
@@ -108,7 +120,8 @@ double EE2() {
 	}
 	else if (t.kind == '(') {
 		left = EE();
-		get_token();
+		Token t=get_token();
+		if (t.kind != ')') error("expect )\n");
 	}
 	else {
 		cin.putback(t.kind);
