@@ -74,10 +74,10 @@ double EE1() {
 	Token t = get_token();
 	while (t.kind == '*' || t.kind == '/') {
 		if (t.kind == '*') {
-			left *= EE1();
+			left *= EE2();
 		}
 		else if (t.kind == '/') {
-			left /= EE1();
+			left /= EE2();
 		}
 		t = get_token();
 	}
