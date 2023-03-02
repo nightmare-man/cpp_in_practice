@@ -9,7 +9,8 @@ Token get_token() {
 	string num = "";
 	Token t{ 'n',0 };
 	bool end = false;
-	while (cin >> tmp&&!end) {
+	while (cin >> tmp) {
+		end = false;
 		if (tmp >= '0' && tmp <= '9') {
 			num += tmp;
 		}
@@ -22,7 +23,7 @@ Token get_token() {
 				}
 				t.value = n;
 				num = "";
-				cin.
+				cin.putback(tmp);
 				break;
 			}
 			else {
@@ -33,13 +34,16 @@ Token get_token() {
 				case '/':
 				case '(':
 				case ')':
+				case '=':
 					t.kind = tmp;
 					end = true;
 					tmp = ' ';
 					break;
+
 				}
 			}
 		}
+		if (end) break;
 	}
 	return t;
 }
@@ -103,7 +107,9 @@ int main() {
 	Token t;
 	while (cin) {
 		t=get_token();
-		tok.push_back(t);
+		if (t.kind != '=')
+			tok.push_back(t);
+		else break;
 	}
 	for (Token t : tok) {
 		cout << "value " << t.value << " kind " << t.kind << endl;
