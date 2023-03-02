@@ -48,6 +48,58 @@ Token get_token() {
 	return t;
 }
 vector<Token> tok;
+double EE();
+double EE1();
+double EE2();
+
+double EE() {
+	double left = EE1();
+	Token t = get_token();
+	while (t.kind=='+'||t.kind=='-') {
+		if (t.kind == '+') {
+			left += EE1();
+		}
+		else if (t.kind == '-') {
+			left -= EE1();
+		}
+		t = get_token();
+	}
+	cin.putback(t.kind);
+	return left;
+}
+double EE1() {
+	double left = EE2();
+	Token t = get_token();
+	while (t.kind == '*' || t.kind == '/') {
+		if (t.kind == '*') {
+			left *= EE1();
+		}
+		else if (t.kind == '/') {
+			left /= EE1();
+		}
+		t = get_token();
+	}
+	cin.putback(t.kind);
+	return left;
+}
+double EE2() {
+	double left = 0;
+	Token t = get_token();
+	if (t.kind == 'n') {
+		left = t.value;
+	}
+	else if (t.kind == '(') {
+		left = EE();
+		get_token();
+	}
+	else if (t.kind == '=') {
+		left = 0;
+	}
+	else {
+		cin.putback(t.kind);
+	}
+	return left;
+}
 bool E(int left, int right, int& r);
 bool E1(int left, int right, int& r);
 bool E2(int left, int right, int& r);
@@ -105,17 +157,8 @@ bool E(int left,int right,int&r) {
 int main() {
 	cout << "Expression:";
 	Token t;
-	while (cin) {
-		t=get_token();
-		if (t.kind != '=')
-			tok.push_back(t);
-		else break;
-	}
-	for (Token t : tok) {
-		cout << "value " << t.value << " kind " << t.kind << endl;
-	}
-	int result = 0;
-	E(0, tok.size() - 1, result);
+	double result=0;
+	result=EE();
 	cout << "result " << result << endl;
 	return 0;
 }
