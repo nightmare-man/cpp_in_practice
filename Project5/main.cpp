@@ -55,33 +55,49 @@ double EE2();
 double EE() {
 	double left = EE1();
 	Token t = get_token();
-	while (t.kind=='+'||t.kind=='-') {
-		//把所有比+-高优先级的EE1读出来后 用循环顺序从左往右算完
-		//读取一个+/ 再试图读一个高优先级的EE1() 然后算出来继续往右
-		if (t.kind == '+') {
+	bool flag = true;
+	while (flag) {
+		//把所有高优先级的匹配到ee1，从左往右计算加减
+		switch (t.kind) {
+		case '+':
 			left += EE1();
-		}
-		else if (t.kind == '-') {
+			t = get_token();
+			break;
+		case '-':
 			left -= EE1();
+			t = get_token();
+			break;
+		case '=':
+			flag = false;
+			break;
+		default:
+			cin.putback(t.kind);
+			flag = false;
+			break;
 		}
-		t = get_token();
 	}
-	cin.putback(t.kind);
 	return left;
 }
 double EE1() {
 	double left = EE2();
 	Token t = get_token();
-	while (t.kind == '*' || t.kind == '/') {
-		if (t.kind == '*') {
+	bool flag = true;
+	while (flag) {
+		switch (t.kind) {
+		case '*':
 			left *= EE2();
-		}
-		else if (t.kind == '/') {
+			t = get_token();
+			break;
+		case '/':
 			left /= EE2();
+			t = get_token();
+			break;
+		default:
+			cin.putback(t.kind);
+			flag = false;
+			break;
 		}
-		t = get_token();
 	}
-	cin.putback(t.kind);
 	return left;
 }
 double EE2() {
@@ -93,9 +109,6 @@ double EE2() {
 	else if (t.kind == '(') {
 		left = EE();
 		get_token();
-	}
-	else if (t.kind == '=') {
-		left = 0;
 	}
 	else {
 		cin.putback(t.kind);
@@ -157,10 +170,15 @@ bool E(int left,int right,int&r) {
 }
 
 int main() {
-	cout << "Expression:";
-	Token t;
-	double result=0;
-	result=EE();
-	cout << "result " << result << endl;
+	while (true) {
+		cin.clear();
+		cout << "Expression:";
+		Token t;
+		double result = 0;
+		result = EE();
+		
+		cout << "result " << result << endl;
+	}
+	
 	return 0;
 }
