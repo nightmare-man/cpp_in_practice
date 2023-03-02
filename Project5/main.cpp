@@ -56,6 +56,8 @@ double EE() {
 	double left = EE1();
 	Token t = get_token();
 	while (t.kind=='+'||t.kind=='-') {
+		//把所有比+-高优先级的EE1读出来后 用循环顺序从左往右算完
+		//读取一个+/ 再试图读一个高优先级的EE1() 然后算出来继续往右
 		if (t.kind == '+') {
 			left += EE1();
 		}
