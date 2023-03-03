@@ -127,7 +127,7 @@ double EE2() {
 }
 
 
-int main() {
+int main1() {
 	try {
 		while (true) {
 			cout << "Expression:";

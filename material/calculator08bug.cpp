@@ -240,7 +240,7 @@ void calculate()
 	}
 }
 
-int main()
+int main1()
 
 try {
 	calculate();

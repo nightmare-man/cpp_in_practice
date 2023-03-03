@@ -73,7 +73,7 @@ double primary()     // read and evaluate a Primary
 }
 //------------------------------------------------------------------------------
 
-int main()
+int main1()
 try {
     while (cin)
         cout << expression() << '\n';
