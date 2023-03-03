@@ -1,37 +1,25 @@
 #include "../include/std_lib_facilities.h"
-int square(int x);
+class Name_value {
+public:
+	string name;
+	int value;
+	Name_value(string n, int v) :name(n), value(v) {
+
+	};
+};
 int main() {
-	vector<string> name;
-	vector<int> score;
-	string n = "";
-	int s = 0;
-	while (cin >> n >> s) {
-		bool existed = false;
-		for (string x: name) {
-			if (x == n) {
-				existed = true;
-				break;
-			}
+	vector<Name_value> data;
+	string name = "";
+	int value = 0;
+	while (cin >> name >> value) {
+		for (Name_value x : data) {
+			if (x.name == name) error("repeated name\n");
 		}
-		if (!existed) {
-			name.push_back(n);
-			score.push_back(s);
-		}
+		data.push_back(Name_value(name, value));
 	}
-	for (int i = 0; i < name.size(); i++) {
-		cout << "name " << name[i] << " score " << score[i] << endl;
+	for (Name_value x : data) {
+		cout << "name:" << x.name << " value:" << x.value << endl;
 	}
-	cout << "enter name ur want find:\n";
-	cin >> n;
-	bool existed = false;
-	for (int i = 0; i < name.size(); i++) {
-		if (name[i] == n) {
-			existed = true;
-			cout << "name " << name[i] << " score " << score[i] << endl;
-			break;
-		}
-	}
-	if (!existed) cout << "name not found\n";
 	return 0;
 }
 int square(int x) {
