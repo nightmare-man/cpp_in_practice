@@ -76,12 +76,13 @@ Token Token_stream::get()
     switch (ch) {
     case '=':    // for "print"
     case 'x':    // for "quit"
+    case '!':
     case '(': case ')': case '+': case '-': case '*': case '/':
     case '{':case '}':
         return Token(ch);        // let each character represent itself
     case '.':
     case '0': case '1': case '2': case '3': case '4':
-    case '5': case '6': case '7': case '9':
+    case '5': case '6': case '7':case '8': case '9':
     {
         cin.putback(ch);         // put digit back into the input stream
         double val;
@@ -100,7 +101,18 @@ Token_stream ts;        // provides get() and putback()
 //------------------------------------------------------------------------------
 
 double expression();    // declaration so that primary() can call expression()
-
+double term();
+double mi();
+double primary();
+double mif(int i) {
+    if (i < 0) error("bad argument to mif()\n");
+    if (i == 0) return 1;
+    int ret = 1;
+    for (int x = 1; x <= i; x++) {
+        ret *= x;
+    }
+    return ret;
+}
 //------------------------------------------------------------------------------
 
 // deal with numbers and parentheses
@@ -128,23 +140,41 @@ double primary()
     }
 }
 
+double mi() {
+    double left = primary();
+    Token t = ts.get();
+    while (true) {
+        switch (t.kind)
+        {
+        case '!': {
+            int a = narrow_cast<int>(left);
+            left = double(mif(a));
+            return left;
+        }
+            
+        default:
+            ts.putback(t);
+            return left;
+        }
+    }
+}
 //------------------------------------------------------------------------------
 
 // deal with *, /, and %
 double term()
 {
-    double left = primary();
+    double left = mi();
     Token t = ts.get();        // get the next token from token stream
 
     while (true) {
         switch (t.kind) {
         case '*':
-            left *= primary();
+            left *= mi();
             t = ts.get();
             break;
         case '/':
         {
-            double d = primary();
+            double d = mi();
             if (d == 0) error("divide by zero");
             left /= d;
             t = ts.get();
