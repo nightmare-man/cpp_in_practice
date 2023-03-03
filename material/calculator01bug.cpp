@@ -16,12 +16,11 @@
     Happy hunting!
 
 */
-
-#include "../std_lib_facilities.h"
+#include "../include/std_lib_facilities.h"
 
 //------------------------------------------------------------------------------
 
-lass Token{
+class Token{
 public:
     char kind;        // what kind of token
     double value;     // for numbers: a value 
