@@ -18,18 +18,23 @@
 */
 #include "../include/std_lib_facilities.h"
 constexpr char number = '8';
-constexpr char print = '=';
+constexpr char print = ';';
 constexpr char quit = 'q';
+constexpr char let = 'L';
+constexpr char name = 'a';
+const string declkey = "let";
 //------------------------------------------------------------------------------
 
 class Token {
 public:
     char kind;        // what kind of token
     double value;     // for numbers: a value 
+    string name;
     Token(char ch)    // make a Token from a char
         :kind(ch), value(0) { }
     Token(char ch, double val)     // make a Token from a char and a double
         :kind(ch), value(val) { }
+    Token(char ch, string n) :kind(ch), name(n) {}
 };
 
 //------------------------------------------------------------------------------
@@ -107,20 +112,83 @@ Token Token_stream::get()
         return Token(number, val);   // let '8' represent "a number"
     }
     default:
+        if (isalpha(ch)) {
+            string s;
+            s += ch;
+            while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
+            cin.putback(ch);
+            if (s == declkey) return Token(let);
+            return Token(name, s);
+        }
         error("Bad token");
     }
 }
+class Variable {
+public:
+    string name;
+    double value;
+    Variable(string s,double v):name(s),value(v) {};
+};
 
 //------------------------------------------------------------------------------
 
 Token_stream ts;        // provides get() and putback() 
-
+vector<Variable> var_table;
 //------------------------------------------------------------------------------
-
+double get_value(string s) {
+    for (const Variable v : var_table) {
+        if (v.name == s) return v.value;
+    }
+    error("get:undefined variable:", s);
+}
+void set_value(string s, double value) {
+    for ( Variable v : var_table) {
+        if (v.name == s) {
+            v.value = value;
+            return;
+        }
+    }
+    error("get:undefined variable:", s);
+}
+bool is_defined(string var) {
+    for (const Variable v : var_table) {
+        if (v.name == var) return true;
+    }
+    return false;
+}
+double define_name(string s,double v) {
+    if (is_defined(s)) error(s, " declared twice\n");
+    var_table.push_back(Variable(s, v));
+    return v;
+}
+double statement();
+double declaration();
 double expression();    // declaration so that primary() can call expression()
 double term();
 double mi();
 double primary();
+double declaration() {
+    Token t = ts.get();
+    if (t.kind != name) error("name expected in declaration()\n");
+    string v_name = t.name;
+    Token t2 = ts.get();
+    if (t2.kind != '=') error("= missing in declaration of", v_name);
+    double d = expression();
+    define_name(v_name, d);
+    return d;
+}
+double statement() {
+    Token t = ts.get();
+    switch (t.kind)
+    {
+    case let: {
+        return declaration();
+    }
+    default:
+        ts.putback(t);
+        return expression();
+    }
+}
 double mif(int i) {
     if (i < 0) error("bad argument to mif()\n");
     if (i == 0) return 1;
@@ -266,7 +334,7 @@ void calculate() {
                 cout << "=" << val << "\n";
             else
                 ts.putback(t);
-            val = expression();
+            val = statement();
         }
         catch (exception& e) {
             cout << "exception: caculate()" << e.what() << endl;

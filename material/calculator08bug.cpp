@@ -15,6 +15,7 @@ struct Token {
 	string name;
 	Token(char ch) :kind(ch), value(0) { }
 	Token(char ch, double val) :kind(ch), value(val) { }
+	Token(char ch, string s) :kind(ch), name(s) ,value(0){}
 };
 
 class Token_stream {
@@ -71,7 +72,7 @@ Token Token_stream::get()
 		if (isalpha(ch)) {
 			string s;
 			s += ch;
-			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) s = ch;
+			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
 			cin.unget();
 			if (s == "let") return Token(let);
 			if (s == "quit") return Token(name);
@@ -240,7 +241,7 @@ void calculate()
 	}
 }
 
-int main1()
+int main()
 
 try {
 	calculate();
