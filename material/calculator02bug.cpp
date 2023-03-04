@@ -17,12 +17,7 @@
 
 */
 #include "../include/std_lib_facilities.h"
-constexpr char number = '8';
-constexpr char print = ';';
-constexpr char quit = 'q';
-constexpr char let = 'L';
-constexpr char name = 'a';
-const string declkey = "let";
+
 //------------------------------------------------------------------------------
 
 class Token {
@@ -133,8 +128,6 @@ public:
 
 //------------------------------------------------------------------------------
 
-Token_stream ts;        // provides get() and putback() 
-vector<Variable> var_table;
 //------------------------------------------------------------------------------
 double get_value(string s) {
     for (const Variable v : var_table) {
@@ -323,7 +316,8 @@ double expression()
         }
     }
 }
-double val = 0;
+
+
 void clean_up_mess() {
     ts.ignore(print);
 }
@@ -347,6 +341,15 @@ void calculate() {
         
     }
 }
+constexpr char number = '8';
+constexpr char print = ';';
+constexpr char quit = 'q';
+constexpr char let = 'L';
+constexpr char name = 'a';
+const string declkey = "let";
+Token_stream ts;        // provides get() and putback() 
+vector<Variable> var_table;
+double val = 0;
 int main()
 try
 {
