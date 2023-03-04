@@ -57,10 +57,13 @@ void Symbol_table::declare(string name, double value) {
 	var_table.push_back(Variable(name, value));
 }
 class Token_stream {
+private:
 	bool full;
 	Token buffer;
+	istream& ins;
 public:
-	Token_stream() :full(0), buffer(0) { }
+	Token_stream(istream& in) :full(false), buffer(0),ins(in) {}
+	Token_stream() :full(0), buffer(0),ins(cin) { }
 
 	Token get();
 	void unget(Token t) { buffer = t; full = true; }
