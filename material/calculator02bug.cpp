@@ -17,7 +17,9 @@
 
 */
 #include "../include/std_lib_facilities.h"
-
+constexpr char number = '8';
+constexpr char print = '=';
+constexpr char quit = 'q';
 //------------------------------------------------------------------------------
 
 class Token {
@@ -37,19 +39,33 @@ public:
     Token_stream();   // make a Token_stream that reads from cin
     Token get();      // get a Token (get() is defined elsewhere)
     void putback(Token t);    // put a Token back
+    void ignore(char ch);
 private:
     bool full;        // is there a Token in the buffer?
     Token buffer;     // here is where we keep a Token put back using putback()
 };
 
 //------------------------------------------------------------------------------
-
 // The constructor just sets full to indicate that the buffer is empty:
 Token_stream::Token_stream()
     :full(false), buffer(0)    // no Token in buffer
 {
 }
-
+/// <summary>
+/// 忽略字符ch及之前的所有输入
+/// </summary>
+/// <param name="ch"></param>
+void Token_stream::ignore(char ch) {
+    if (full && buffer.kind == ch) {
+        full = false;
+        return;
+    }
+    full = false;
+    char x = 0;
+    while (cin >> x) {
+        if (x == ch) return;
+    }
+}
 //------------------------------------------------------------------------------
 
 // The putback() member function puts its argument back into the Token_stream's buffer:
@@ -74,8 +90,8 @@ Token Token_stream::get()
     cin >> ch;    // note that >> skips whitespace (space, newline, tab, etc.)
 
     switch (ch) {
-    case '=':    // for "print"
-    case 'x':    // for "quit"
+    case print:    // for "print"
+    case quit:    // for "quit"
     case '!':
     case '%':
     case '(': case ')': case '+': case '-': case '*': case '/':
@@ -88,7 +104,7 @@ Token Token_stream::get()
         cin.putback(ch);         // put digit back into the input stream
         double val;
         cin >> val;              // read a floating-point number
-        return Token('8', val);   // let '8' represent "a number"
+        return Token(number, val);   // let '8' represent "a number"
     }
     default:
         error("Bad token");
@@ -142,7 +158,7 @@ double primary()
         double d = primary();
         return d;
     }
-    case '8':            // we use '8' to represent a number
+    case number:            // we use '8' to represent a number
         return t.value;  // return the number's value
     default:
         error("primary expected");
@@ -235,25 +251,37 @@ double expression()
         }
     }
 }
-
+int val = 0;
+void clean_up_mess() {
+    ts.ignore(print);
+}
 //------------------------------------------------------------------------------
-
+void calculate() {
+    while (cin) {
+        try {
+            cout << ">";
+            Token t = ts.get();
+            if (t.kind == quit) break; // 'q' for quit
+            if (t.kind == print)        // ';' for "print now"
+                cout << "=" << val << "\n";
+            else
+                ts.putback(t);
+            val = expression();
+        }
+        catch (exception& e) {
+            cout << "exception: caculate()" << e.what() << endl;
+            clean_up_mess();
+        }
+        
+    }
+}
 int main()
 try
 {
-    cout << "Welcome to our simple calculator.Enter expressions here:\n";
-    double val = 0;
-    while (cin) {
-        cout << ">";
-        Token t = ts.get();
-        if (t.kind == 'x') break; // 'q' for quit
-        if (t.kind == '=')        // ';' for "print now"
-            cout << "=" << val << "\n";
-        else
-            ts.putback(t);
-        val = expression();
-    }
+    calculate();
+
     keep_window_open();
+    return 0;
 }
 catch (exception& e) {
     cerr << "error: " << e.what() << '\n';
