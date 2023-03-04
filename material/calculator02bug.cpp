@@ -34,7 +34,7 @@ public:
         :kind(ch), value(0) { }
     Token(char ch, double val)     // make a Token from a char and a double
         :kind(ch), value(val) { }
-    Token(char ch, string n) :kind(ch), name(n) {}
+    Token(char ch, string n) :kind(ch), name(n) ,value(0){}
 };
 
 //------------------------------------------------------------------------------
@@ -97,6 +97,7 @@ Token Token_stream::get()
     switch (ch) {
     case print:    // for "print"
     case quit:    // for "quit"
+    case '=':
     case '!':
     case '%':
     case '(': case ')': case '+': case '-': case '*': case '/':
@@ -218,6 +219,9 @@ double primary()
         if (t.kind != '}') error(" '}' expected");
         return d;
     }
+    case name: {
+        return get_value(t.name);
+    }
     case '-':{
         double d = primary();
         return d * (-1);
@@ -319,7 +323,7 @@ double expression()
         }
     }
 }
-int val = 0;
+double val = 0;
 void clean_up_mess() {
     ts.ignore(print);
 }
@@ -346,8 +350,9 @@ void calculate() {
 int main()
 try
 {
+    define_name("pi", 3.1415);
+    define_name("e", 2.71828);
     calculate();
-
     keep_window_open();
     return 0;
 }
