@@ -115,7 +115,7 @@ double get_value(string s)
 
 void set_value(string s, double d)
 {
-	for (int i = 0; i <= names.size(); ++i)
+	for (int i = 0; i < names.size(); ++i)
 		if (names[i].name == s) {
 			names[i].value = d;
 			return;
@@ -147,8 +147,21 @@ double primary()
 		return -primary();
 	case number:
 		return t.value;
-	case name:
-		return get_value(t.name);
+	case name: {
+		string name = t.name;
+		t = ts.get();
+		if (t.kind == '=') {
+			double right = expression();
+			set_value(name, right);
+			return right;
+		}
+		else {
+			ts.unget(t);
+			return get_value(name);
+		}
+		
+	}
+		
 	case sqrt_ch: {
 		t = ts.get();
 		if (t.kind != '(') error("'(' expected after sqrt");
