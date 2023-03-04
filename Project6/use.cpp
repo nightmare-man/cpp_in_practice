@@ -1,22 +1,35 @@
-#include "my.h"
-void swap(int a, int b) {
-	int temp;
-	temp = a;
-	a = b;
-	b = temp;
+#include "../include/std_lib_facilities.h"
+namespace X {
+	int var = 7;
+	void print() {
+		cout << var << endl;
+	}
 }
-void swap_r(int& a, int& b) {
-	int temp;
-	temp = a;
-	a = b;
-	b = temp;
+namespace Y {
+	int var = 9;
+	void print() {
+		cout << var << endl;
+	}
 }
-
+namespace Z {
+	int var = 11;
+	void print() {
+		cout << var << endl;
+	}
+}
 int main() {
-	const int x = 7;
-	const int y = 9;
-	swap_r(x, y);
-	print(x);
-	print(y);
+	X::print();
+	X::var = 8;
+	using namespace Y;
+	var = 9;
+	print();
+	{
+		using Z::var;
+		using Z::print;
+		var = 14;
+		print();
+	}
+	print();
+	X::print();
 	return 0;
 }
