@@ -133,6 +133,14 @@ double primary()
         if (t.kind != '}') error(" '}' expected");
         return d;
     }
+    case '-':{
+        double d = primary();
+        return d * (-1);
+    }
+    case '+': {
+        double d = primary();
+        return d;
+    }
     case '8':            // we use '8' to represent a number
         return t.value;  // return the number's value
     default:
@@ -220,11 +228,11 @@ try
     cout << "Welcome to our simple calculator.Enter expressions here:\n";
     double val = 0;
     while (cin) {
+        cout << ">";
         Token t = ts.get();
-
         if (t.kind == 'x') break; // 'q' for quit
         if (t.kind == '=')        // ';' for "print now"
-            cout << "=" << val << '\n';
+            cout << "=" << val << "\n";
         else
             ts.putback(t);
         val = expression();
