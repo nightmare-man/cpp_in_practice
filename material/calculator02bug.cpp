@@ -77,6 +77,7 @@ Token Token_stream::get()
     case '=':    // for "print"
     case 'x':    // for "quit"
     case '!':
+    case '%':
     case '(': case ')': case '+': case '-': case '*': case '/':
     case '{':case '}':
         return Token(ch);        // let each character represent itself
@@ -185,6 +186,15 @@ double term()
             double d = mi();
             if (d == 0) error("divide by zero");
             left /= d;
+            t = ts.get();
+            break;
+        }
+        case '%': {
+            int lval = narrow_cast<int>(left);
+            int rval =narrow_cast<int>(mi());
+            if (rval == 0) error("%: divide by zero\n");
+            lval = lval % rval;
+            left = int(lval);
             t = ts.get();
             break;
         }
