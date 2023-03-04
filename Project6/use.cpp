@@ -24,7 +24,7 @@ int main() {
 	var = 9;
 	print();
 	{
-		using Z::var;
+		using Z::var;//这里是块作用域，单独使用using 部分 而不是using namespace
 		using Z::print;
 		var = 14;
 		print();
