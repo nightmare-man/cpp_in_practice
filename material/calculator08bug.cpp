@@ -17,7 +17,45 @@ struct Token {
 	Token(char ch, double val) :kind(ch), value(val) { }
 	Token(char ch, string s) :kind(ch), name(s) ,value(0){}
 };
+struct Variable {
+	string name;
+	double value;
+	Variable(string n, double v) :name(n), value(v) { }
+};
+class Symbol_table {
+public:
+	double get(string name);
+	void set(string name, double value);
+	bool is_declared(string name);
+	void declare(string name,double value);
+private:
+	vector<Variable> var_table;
 
+};
+double Symbol_table::get(string name) {
+	for (Variable x : var_table) {
+		if (x.name == name) return x.value;
+	}
+	error(name, " not declared when get()");
+}
+void Symbol_table::set(string name, double value) {
+	for (Variable x : var_table) {
+		if (x.name == name) {
+			x.value = value;
+			return;
+		}
+	}
+	error(name, " not declared when set()");
+}bool Symbol_table::is_declared(string name) {
+	for (Variable x : var_table) {
+		if (x.name == name) return true;
+	}
+	return false;
+}
+void Symbol_table::declare(string name, double value) {
+	if (is_declared(name)) error(name, " declare twice");
+	var_table.push_back(Variable(name, value));
+}
 class Token_stream {
 	bool full;
 	Token buffer;
@@ -98,38 +136,10 @@ void Token_stream::ignore(char c)
 		if (ch == c) return;
 }
 
-struct Variable {
-	string name;
-	double value;
-	Variable(string n, double v) :name(n), value(v) { }
-};
 
-vector<Variable> names;
 
-double get_value(string s)
-{
-	for (int i = 0; i < names.size(); ++i)
-		if (names[i].name == s) return names[i].value;
-	error("get: undefined name ", s);
-}
 
-void set_value(string s, double d)
-{
-	for (int i = 0; i < names.size(); ++i)
-		if (names[i].name == s) {
-			names[i].value = d;
-			return;
-		}
-	error("set: undefined name ", s);
-}
-
-bool is_declared(string s)
-{
-	for (int i = 0; i < names.size(); ++i)
-		if (names[i].name == s) return true;
-	return false;
-}
-
+Symbol_table st;
 Token_stream ts;
 
 double expression();
@@ -152,12 +162,12 @@ double primary()
 		t = ts.get();
 		if (t.kind == '=') {
 			double right = expression();
-			set_value(name, right);
+			st.set(name, right);
 			return right;
 		}
 		else {
 			ts.unget(t);
-			return get_value(name);
+			return st.get(name);
 		}
 		
 	}
@@ -221,11 +231,11 @@ double declaration()
 	Token t = ts.get();
 	if (t.kind != 'a') error("name expected in declaration");
 	string name = t.name;
-	if (is_declared(name)) error(name, " declared twice");
+	
 	Token t2 = ts.get();
 	if (t2.kind != '=') error("= missing in declaration of ", name);
 	double d = expression();
-	names.push_back(Variable(name, d));
+	st.declare(name, d);
 	return d;
 }
 
