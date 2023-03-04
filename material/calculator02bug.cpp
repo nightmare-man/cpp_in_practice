@@ -190,11 +190,17 @@ double term()
             break;
         }
         case '%': {
-            int lval = narrow_cast<int>(left);
-            int rval =narrow_cast<int>(mi());
-            if (rval == 0) error("%: divide by zero\n");
-            lval = lval % rval;
-            left = int(lval);
+            try {
+                int lval = narrow_cast<int>(left);
+                int rval = narrow_cast<int>(mi());
+                if (rval == 0) error("%: divide by zero\n");
+                lval = lval % rval;
+                left = int(lval);
+                
+            }
+            catch (runtime_error& e) {
+                error("% don't support float\n");
+            }
             t = ts.get();
             break;
         }
