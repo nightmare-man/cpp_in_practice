@@ -33,8 +33,10 @@ public:
 const char let = 'L';
 const char quit = 'Q';
 const char print = ';';
+const char sqrt_ch = 'z';
 const char number = '8';
 const char name = 'a';
+const string sqrt_s = "sqrt";
 
 Token Token_stream::get()
 {
@@ -76,6 +78,7 @@ Token Token_stream::get()
 			cin.unget();
 			if (s == "let") return Token(let);
 			if (s == "quit") return Token(name);
+			if (s == "sqrt") return Token(sqrt_ch);
 			return Token(name, s);
 		}
 		error("Bad token");
@@ -146,6 +149,14 @@ double primary()
 		return t.value;
 	case name:
 		return get_value(t.name);
+	case sqrt_ch: {
+		t = ts.get();
+		if (t.kind != '(') error("'(' expected after sqrt");
+		double left = sqrt(expression());
+		t = ts.get();
+		if (t.kind != ')') error("')' expected after sqrt(");
+		return left;
+	}
 	default:
 		error("primary expected");
 	}

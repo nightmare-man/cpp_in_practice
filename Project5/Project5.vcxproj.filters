@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\material\calculator02bug.cpp">
+    <ClCompile Include="..\material\calculator08bug.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
