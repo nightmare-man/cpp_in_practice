@@ -53,9 +53,7 @@ void Date::add_day(int n) {
 
 
 int main() {
-	Month m = Month::dec;
-	++m;
-	cout<<int(m);
+	Date d(Year(2009), Month::jan, 10);
 
 	return 0;
 }
