@@ -57,4 +57,6 @@ void Date::add_day(int n) {
 
 int main() {
 	Date d{ Year(1999),Month::jan,1 };
+	Date d1 = d;
+	Date d2{ d };
 }
