@@ -39,9 +39,17 @@ enum Day {
 };
 Month operator++(Month& m) {
 	m = (m == Month::dec )?Month::jan:Month(int(m) + 1);
+	//可以将枚举类型转化成int
+	//也可以通过Month(int) 构造枚举
 	return m;
 }
+int operator+(int a, int b) {
+
+}
 int main() {
-	
+	Month m = Month::dec;
+	++m;
+	cout<<int(m);
+
 	return 0;
 }
