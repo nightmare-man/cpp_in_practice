@@ -29,7 +29,7 @@ public:
 	Month month() { return m; }
 	//成员函数定义放在类定义内 成为内联，但缺点是当函数改变时
 	//所有引用该类的地方都要重新编译
-	int year() { return y; }
+	int year() { return y.year(); }
 	int day() { return d; }
 private:
 	bool is_valid();
@@ -54,6 +54,7 @@ void Date::add_day(int n) {
 
 int main() {
 	Date d(Year(2009), Month::jan, 10);
-
+	Date d1{ d };
+	d1.print();
 	return 0;
 }
