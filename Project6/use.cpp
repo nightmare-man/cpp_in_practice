@@ -56,8 +56,5 @@ void Date::add_day(int n) {
 
 
 int main() {
-	vector<Date> d(10);
-	for (Date x : d) {
-		x.print();
-	}
+	Date d{ Year(1999),Month::jan,1 };
 }
