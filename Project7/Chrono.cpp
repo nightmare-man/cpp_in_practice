@@ -21,10 +21,10 @@ namespace Chrono {//表示仍在Chrono作用域内
 
 	}
 	bool is_date(int y, Month m, int d) {
-
+		return true;
 	}
 	bool leapyear(int y) {
-
+		return false;
 	}
 	bool operator==(const Date& a, const Date& b) {
 		return a.year() == b.year() && a.month() == b.month() && a.day() == b.day();
