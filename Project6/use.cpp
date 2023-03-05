@@ -23,6 +23,9 @@ class Date {
 	
 public:
 	class Invalid {};
+	Date() :y(Year(1990)), m(Month::jan), d(1) {};
+	//因为有其他构造函数，所以编译器不会提供默认构造函数
+	//因此需要自己提供
 	Date(Year y1, Month m1, int d1);
 	void print();
 	void add_day(int n);
@@ -35,7 +38,7 @@ private:
 	bool is_valid();
 	Year y;
 	Month m;
-	int d;
+	int d{ 1 };//类内初始化
 };
 Date::Date(Year y1, Month m1, int d1):y(y1),m(m1),d(d1) {
 	if (!is_valid())throw Invalid{};
@@ -53,8 +56,8 @@ void Date::add_day(int n) {
 
 
 int main() {
-	Date d(Year(2009), Month::jan, 10);
-	Date d1{ d };
-	d1.print();
-	return 0;
+	vector<Date> d(10);
+	for (Date x : d) {
+		x.print();
+	}
 }
