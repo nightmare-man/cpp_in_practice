@@ -9,10 +9,21 @@ Month operator++(Month& m) {
 	//也可以通过Month(int) 构造枚举
 	return m;
 }
-class Date {
+class Year {
+	static const int min = 1800;
+	static const int max = 2200;
 public:
 	class Invalid {};
-	Date(int y1, Month m1, int d1);
+	Year(int x) :y(x) { if (x<min || x>=max )throw Invalid{}; }
+	int year() { return y; }
+private:
+	int y;
+};
+class Date {
+	
+public:
+	class Invalid {};
+	Date(Year y1, Month m1, int d1);
 	void print();
 	void add_day(int n);
 	Month month() { return m; }
@@ -22,20 +33,19 @@ public:
 	int day() { return d; }
 private:
 	bool is_valid();
-	int y;
+	Year y;
 	Month m;
 	int d;
 };
-Date::Date(int y1, Month m1, int d1):y(y1),m(m1),d(d1) {
+Date::Date(Year y1, Month m1, int d1):y(y1),m(m1),d(d1) {
 	if (!is_valid())throw Invalid{};
 }
 bool Date::is_valid() {
 	if (d < 1 || d>30) return false;
-	if (y < 1990) return false;
 	return true;
 }
 void Date::print() {
-	cout << y << " " <<int(m) << " "<<d;
+	cout << y.year() << " " <<int(m) << " "<<d;
 }
 void Date::add_day(int n) {
 
