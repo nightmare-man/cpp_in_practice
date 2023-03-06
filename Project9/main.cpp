@@ -1,7 +1,8 @@
 #include "../include/std_lib_facilities.h"
 int main() {
-	//hex oct dec 16 8 10进制操作符
-	cout << 1234 << " hex:" << hex << 1234 << " oct:" << oct << 1234;
-	//showbase 显示16 8进制前缀
-	cout << showbase << hex << 1234;
+	int a, b, c, d;
+	//用10进制输入a 16进制输入b 8进制输入cd
+	cin >> a >> hex >> b >> oct >> c >> d;
+	cout << a << '\t' << b << '\t' << c << '\t' << d << endl;
+	//每种操作符都是持久的，除非显示解除
 }
