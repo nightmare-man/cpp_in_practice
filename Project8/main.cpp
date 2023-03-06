@@ -42,6 +42,12 @@ int month_to_int(string mm) {
 	}
 	return -1;
 }
+/// <summary>
+///  按照某种类型不断读取，失败时即是判断结尾的时候，因此这儿是if(is.fail())
+/// </summary>
+/// <param name="is"></param>
+/// <param name="term"></param>
+/// <param name="message"></param>
 void end_of_loop(istream& is, char term, string message) {
 	if (is.fail()) {
 		is.clear();
@@ -81,7 +87,29 @@ istream& operator>>(istream& is, Month& m) {
 	
 	return is;
 }
+istream& operator>>(istream& is, Year y) {
+	char ch;
+	is >> ch;
+	if (!is || ch != '{') {
+		is.unget();
+		//设置成类型读错
+		is.clear(ios_base::failbit);
+		return is;
+	}
+	string year_maker;
+	int yy;
+	is >> year_maker >> yy;
+	if (!is||year_maker != "year") error("bad start of year");
+	y.year = yy;
+	while (true) {
+		Month m;
+		if (!(is >> m)) break;
+		y.month[m.month] = m;
+	}
+	end_of_loop(is, '}', "expect '}'");
+	return is;
+}
 int main() {
-	Month m;
-	cin >> m;
+	Year y;
+	cin >> y;
 }
