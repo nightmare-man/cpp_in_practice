@@ -2,13 +2,12 @@
 class Myvector {
 public:
 	Myvector(int s) :size{ s }, mem{ new double[s] } {
-		cout << "alloc: " << s * sizeof(double) << " byte\n";
+		//初始化
+		for (int i = 0; i < s; i++) mem[i] = 0;
 	};
-	~Myvector() { delete[] mem; 
-	cout << "free\n";
-	while (true) {}
-
-	};
+	~Myvector() { delete[] mem;};
+	double get(int idx)const { return mem[idx]; };
+	void set(int idx, double val) { mem[idx] = val; };
 	int Size()const { return size; };
 
 private:
@@ -28,6 +27,9 @@ double* calc(int res, int max) {
 }
 int main() {
 	Myvector d{ 5 };
-	cout << d.Size();
+	cout << d.Size()<<endl;
+	cout << "d[0]" << d.get(0) << endl;
+	d.set(0, 10);
+	cout << "d[0]" << d.get(0) << endl;
 	return 0;
 }
