@@ -1,4 +1,20 @@
 #include "../include/std_lib_facilities.h"
+class Myvector {
+public:
+	Myvector(int s) :size{ s }, mem{ new double[s] } {
+		cout << "alloc: " << s * sizeof(double) << " byte\n";
+	};
+	~Myvector() { delete[] mem; 
+	cout << "free\n";
+	while (true) {}
+
+	};
+	int Size()const { return size; };
+
+private:
+	int size;
+	double* mem;
+};
 double* calc(int res, int max) {
 	//p用于局部使用，但是忘记释放
 	double* p = new double[max];
@@ -11,6 +27,7 @@ double* calc(int res, int max) {
 	return res1;
 }
 int main() {
-	double* t = calc(100, 100);
+	Myvector d{ 5 };
+	cout << d.Size();
 	return 0;
 }
