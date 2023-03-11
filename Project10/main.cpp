@@ -37,15 +37,17 @@ double* calc(int res, int max) {
 	return res1;
 }
 int main() {
-	//const 修饰符只在编译时确保不被修改，
-	//通过指针运行时可以修改，但是为啥
-	//输出的a还是10呢？因为编译器优化时
-	//直接把a替换成字面量10，而*b输出11
-	//表明确实修改成功了
-	const int a = 10;
-	int* b = const_cast<int*>(&a);
-	*b = 11;
-	cout << a;
-	cout << *b;
+	//定义变量初始化为10
+	int y = 10;
+	//没有新变量，但是有符号r引用了y
+	int& r = y;
+	//通过r引用 y变为7
+	r = 7;
+	//定义变量y2 通过r 引用y给y2赋值7；
+	int y2 = r;
+	
+	int& r2 = y2;
+	//通过r2引用y2 r引用y 赋值
+	r2 = r;
 	return 0;
 }
