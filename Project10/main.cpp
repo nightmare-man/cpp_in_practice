@@ -1,4 +1,14 @@
 #include "../include/std_lib_facilities.h"
+class A {
+public:
+	A() { cout << "A construct\n"; }
+	~A() { cout << "A destruct\n"; }
+};
+class B :A {
+public:
+	B() { cout << "B construct\n"; }
+	~B() { cout << "B destruct\n"; }
+};
 class Myvector {
 public:
 	Myvector(int s) :size{ s }, mem{ new double[s] } {
@@ -27,12 +37,6 @@ double* calc(int res, int max) {
 	return res1;
 }
 int main() {
-	//new 对象数组的初始化
-	Myvector* d = new Myvector[5]{5,4,3,2,1};
-	cout << d->Size()<<endl;
-	cout << "d[0]" << d->get(0) << endl;
-	d->set(0, 10);
-	cout << "d[0]" << d->get(0) << endl;
-	delete[] d;
+	B b;
 	return 0;
 }
