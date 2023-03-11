@@ -20,11 +20,15 @@ private:
 	int size;
 	double* mem;
 };
+class Aaa {
+public:
+	int val1;
+	//引用也可以作为成员变量
+	int& val2;
+	Aaa(int a, int& b) :val1{ a }, val2{ b } {};
+};
 int main() {
-	//列表初始化容器initializer_list
-	Myvector v{ 1,2,3,4,5 };
-	Myvector v2{ 0,0,0,0,0 };
-	//析构函数会报错，原因是浅拷贝，导致v原来分配的内存
-	//被释放两次 而v2原来的的没释放
-	cout << v2.get(4);
+	int a = 10;
+	Aaa a1{a,a};
+
 }
