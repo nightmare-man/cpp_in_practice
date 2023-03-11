@@ -5,6 +5,7 @@ public:
 		//容器的copy
 		std::copy(lst.begin(), lst.end(), mem);
 	};
+	int Size()const { return size; };
 	double get(int idx)const {
 		if (idx < 0 || idx >= size) error("out of range\n");
 		return mem[idx];
@@ -13,6 +14,10 @@ public:
 		if (idx < 0 || idx >= size) error("out of range\n");
 		mem[idx] = val;
 	}
+	//拷贝构造函数
+	Myvector(const Myvector& arg) :size{ arg.size }, mem{new double[size]} {
+		std::copy(arg.mem, arg.mem+size, mem);
+	}
 	~Myvector() {
 		delete[] mem;
 	}
@@ -20,15 +25,9 @@ private:
 	int size;
 	double* mem;
 };
-class Aaa {
-public:
-	int val1;
-	//引用也可以作为成员变量
-	int& val2;
-	Aaa(int a, int& b) :val1{ a }, val2{ b } {};
-};
 int main() {
-	int a = 10;
-	Aaa a1{a,a};
-
+	Myvector v1{ 1,2,3,4,5 };
+	Myvector v2 = v1;
+	cout << v2.get(3);
+	return 0;
 }
