@@ -15,6 +15,7 @@ public:
 		mem[idx] = val;
 	}
 	//拷贝构造函数
+	//隐式类型转换 Myvector&arg->const Myvector&
 	Myvector(const Myvector& arg) :size{ arg.size }, mem{new double[size]} {
 		std::copy(arg.mem, arg.mem+size, mem);
 	}
