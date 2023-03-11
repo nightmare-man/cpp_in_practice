@@ -3,6 +3,7 @@ class Myvector {
 public:
 	Myvector(int s) :size{ s }, mem{ new double[s] } {
 		//初始化
+		cout << "init\n";
 		for (int i = 0; i < s; i++) mem[i] = 0;
 	};
 	~Myvector() { delete[] mem;};
@@ -26,10 +27,12 @@ double* calc(int res, int max) {
 	return res1;
 }
 int main() {
-	Myvector d{ 5 };
-	cout << d.Size()<<endl;
-	cout << "d[0]" << d.get(0) << endl;
-	d.set(0, 10);
-	cout << "d[0]" << d.get(0) << endl;
+	//new 对象数组的初始化
+	Myvector* d = new Myvector[5]{5,4,3,2,1};
+	cout << d->Size()<<endl;
+	cout << "d[0]" << d->get(0) << endl;
+	d->set(0, 10);
+	cout << "d[0]" << d->get(0) << endl;
+	delete[] d;
 	return 0;
 }
