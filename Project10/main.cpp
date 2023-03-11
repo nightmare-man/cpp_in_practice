@@ -1,16 +1,11 @@
 #include "../include/std_lib_facilities.h"
+double* calc(int res, int max) {
+	//p用于局部使用，但是忘记释放
+	double* p = new double[max];
+	double* res1 = new double[res];
+	return res1;
+}
 int main() {
-	int  *a= new int;
-
-	*a = 10990;
-	int* b = new int;
-	*b = 10;
-	int c=(*a)/(*b);
-	cout << a;
-	cout << b;
-	cout << &c;
-	while (true) {
-
-	}
+	double* t = calc(100, 100);
 	return 0;
 }
