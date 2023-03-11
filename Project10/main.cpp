@@ -37,6 +37,15 @@ double* calc(int res, int max) {
 	return res1;
 }
 int main() {
-	B b;
+	//const 修饰符只在编译时确保不被修改，
+	//通过指针运行时可以修改，但是为啥
+	//输出的a还是10呢？因为编译器优化时
+	//直接把a替换成字面量10，而*b输出11
+	//表明确实修改成功了
+	const int a = 10;
+	int* b = const_cast<int*>(&a);
+	*b = 11;
+	cout << a;
+	cout << *b;
 	return 0;
 }
