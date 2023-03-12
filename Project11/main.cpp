@@ -63,12 +63,17 @@ Myvector f1() {
 	Myvector res{ 1,2,3 };
 	return res;
 }
+void f(Myvector v) {
+	cout<<v.Size();
+}
 int main() {
 	Myvector v(3);
 
 	Myvector v1(4);
 	//编译器进行了优化，没有调用移动构造
 	//而是直接把返回的右值对象改成左值成为了v2
-	Myvector v2 = f1();
+	//传入参数时默认是传值，也就是复制
+	//显示使用了拷贝初始化
+	f(v1);
 	return 0;
 }
