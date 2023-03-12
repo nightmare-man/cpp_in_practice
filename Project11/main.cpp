@@ -11,15 +11,15 @@ public:
 		cout << "调用了初始化\n";
 	}
 	int Size()const { return size; };
-	double get(int idx)const {
-		if (idx < 0 || idx >= size) error("out of range\n");
-		return mem[idx];
-	};
-	void set(int idx,double val){
-		if (idx < 0 || idx >= size) error("out of range\n");
-		mem[idx] = val;
+	double& operator[](int n) { 
+		if (n < 0 || n >= size) error("out of range");
+		return mem[n]; 
 	}
-	
+	//适用于const的Myvector对象使用[]
+	double operator[](int n) const {
+		if (n < 0 || n >= size) error("out of range");
+		return mem[n];
+	}
 	Myvector(const Myvector& arg) :size{ arg.size }, mem{new double[size]} {
 		std::copy(arg.mem, arg.mem+size, mem);
 		cout << "调用了拷贝初始化\n";
@@ -63,17 +63,16 @@ Myvector f1() {
 	Myvector res{ 1,2,3 };
 	return res;
 }
-void f(Myvector v) {
-	cout<<v.Size();
+void f(const Myvector& v) {
+	//调用了const版本的[]
+	double d = v[1];
+	cout << d;
 }
 int main() {
 	Myvector v(3);
 
 	Myvector v1(4);
-	//编译器进行了优化，没有调用移动构造
-	//而是直接把返回的右值对象改成左值成为了v2
-	//传入参数时默认是传值，也就是复制
-	//显示使用了拷贝初始化
-	f(v1);
+	v[1] = 2;
+	f(v);
 	return 0;
 }
