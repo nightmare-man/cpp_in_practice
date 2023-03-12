@@ -71,6 +71,7 @@ void f(const Myvector& v) {
 int main() {
 	int a[20];
 	int b = 0;
+	//数组名很多时候会被当作指针，但是不能修改
 	a = &b;
 	Myvector v(3);
 
