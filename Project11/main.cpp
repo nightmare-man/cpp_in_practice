@@ -69,6 +69,9 @@ void f(const Myvector& v) {
 	cout << d;
 }
 int main() {
+	int a[20];
+	int b = 0;
+	a = &b;
 	Myvector v(3);
 
 	Myvector v1(4);
