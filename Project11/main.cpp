@@ -39,12 +39,21 @@ Myvector& Myvector::operator=(const Myvector& v) {
 	size = v.size;
 	return *this;
 }
+/// <summary>
+/// 函数返回对象，并用来赋值（拷贝赋值），该对象成为零时对象，复制
+/// 会被销毁
+/// </summary>
+/// <returns></returns>
+Myvector f1() {
+	Myvector res{ 1,2,3 };
+	return res;
+}
 int main() {
 	Myvector v(3);
 
 	Myvector v1(4);
 
-	v1 = v;
-
+	Myvector v2 = f1();
+	cout << v2.get(1);
 	return 0;
 }
