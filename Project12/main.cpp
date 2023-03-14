@@ -27,15 +27,25 @@ class List<Elem>::iterator {
 private:
 	Link<Elem>* cur;
 public:
-	iterator(Link<Elem>* p) :curr(p) {};
+	iterator(Link<Elem>* p) :cur(p) {};
 	iterator& operator--() { cur = cur->prev; return *this; }
 	iterator& operator++() { cur = cur->succ; return *this; }
 	Elem& operator*() { return cur->val; }
 	bool operator==(const iterator& b) { return cur == b.cur; }
 	bool operator!=(const iterator& b) { return !(*this == b); }
 };
+template<typename Iter>
+Iter high(Iter first, Iter last) {
+	Iter high = first;
+	for (Iter p = first; p != last; p++) {
+		if (*high < *p) high = p;
+	}
+	return high;
+}
 int main() {
-	
+	//未定义的错误
+	int* a;
+	cout << &a[0];
 	return 0;
 }
 
