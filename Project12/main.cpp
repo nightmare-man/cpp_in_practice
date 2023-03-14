@@ -1,20 +1,27 @@
 #include "../include/std_lib_facilities.h"
-vector<double> f() {
-    vector<double> ret{ 4 };
-    ret.push_back(12.0);
-    return ret;
+void copy(int* f1, int* e1, int* f2) {
+	if (f1 == e1) return;
+	for (; f1 != e1; ) {
+		*f2 = *f1;
+		f1++;
+		f2++;
+	}
+}
+//迭代器 指向序列中的某个元素，可以做一系列操作
+//可以是指针 也可以是引用等
+//泛型比较
+template<typename Iterator> //要求传入的类型为容器类型
+Iterator high(Iterator s,Iterator e) {
+	Iterator h = s;
+	for (; s != e; s++) {
+		if (*s > *h)h = s;
+	}
+	return h;
 }
 int main() {
-    //移动构造函数
-    vector<double> v = f();
-    cout << v[0];
-    int* const p = new int;
-    //用引用指向指针指的位置，这样就不用再
-    //频繁操作指针，防止指针修改过程中
-    //的错误 相当于 int* const p;
-    int a = 10;
-    p = &a;
-    int& z = *p;
-    cout << z;
-    return 0;
+	//迭代器 iterator类
+	vector<int> p{ 1,2,3,44,4,5 };
+	vector<int>::iterator a = high(p.begin(), p.end());
+	cout << *a;
+	return 0;
 }
