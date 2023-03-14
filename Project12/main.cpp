@@ -22,10 +22,20 @@ public:
 	Elem& front();
 	Elem& last();
 };
+template<typename Elem>
+class List<Elem>::iterator {
+private:
+	Link<Elem>* cur;
+public:
+	iterator(Link<Elem>* p) :curr(p) {};
+	iterator& operator--() { cur = cur->prev; return *this; }
+	iterator& operator++() { cur = cur->succ; return *this; }
+	Elem& operator*() { return cur->val; }
+	bool operator==(const iterator& b) { return cur == b.cur; }
+	bool operator!=(const iterator& b) { return !(*this == b); }
+};
 int main() {
-	Link<int> a;
-	a.val = 10;
-	a.prev = &a;
-	cout << a.prev;
-
+	
+	return 0;
 }
+
