@@ -23,11 +23,11 @@ public:
 		return *cpos;
 	}
 	Text_iterator& operator++() {
+		cpos++;
 		if (cpos == (*lpos).end()) {
 			lpos++;
 			cpos = (*lpos).begin();
 		}
-		else cpos++;
 		return *this;
 	}
 	Text_iterator& operator--() {
@@ -39,12 +39,18 @@ public:
 		return *this;
 	}
 };
-struct Doc {
+class Doc {
+public:
 	list<Line> line;
-	Text_iterator begin() {
-		return Text_iterator(line.begin(),(*line.begin()).begin() );
-	}
 
+	Text_iterator begin() {
+		return Text_iterator(line.begin(), (*line.begin()).begin());
+	};
+	Text_iterator end() {
+		auto last = line.end();
+		--last;//最后一行为空
+		return Text_iterator(last, (*last).end());
+	}
 
 	//构造函数添加空行
 	Doc() { line.push_back(Line{}); }
@@ -59,10 +65,14 @@ istream& operator>>(istream& is, Doc& d) {
 	if (d.line.back().size()) d.line.push_back(Line{});
 	return is;
 }
-
+ostream& operator<<(ostream& os,   Doc& d) {
+	//for 迭代器运算 auto p的类型是*iterator
+	for (auto p : d) cout <<p;
+	return os;
+}
 int main() {
 	Doc d;
 	cin >> d;
-
+	cout << d;
 	return 0;
 }
