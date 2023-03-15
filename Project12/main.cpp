@@ -1,132 +1,80 @@
-#include <iostream>
-#include <vector>
-#include <list>
-using namespace std;
-using Line = vector<char>;
-class Text_iterator {
-private:
-	list<Line>::iterator lpos;
-	Line::iterator cpos;
-public:
-	//这里有个坑，为啥不是传递引用而是传值呢？
-	//vector<char> 的begin()返回是一个右值
-	//临时的，如果想直接用的话这里就不能用引用
-	//如果想用引用 得
-	//vector<char>::iterator p= vector<char>.bein()
-	//再传p作为第二个参数
-	// 而采用这种方法，会多定义一个中间局部变量，浪费性能
-	//直接调用移动赋值快
-	Text_iterator(list<Line>::iterator ll, Line::iterator cc) :lpos{ ll }, cpos{ cc } {};
-	bool operator==(const Text_iterator& b) { return (lpos == b.lpos) && (cpos == b.cpos); };
-	bool operator!=(const Text_iterator& b) { return !((*this) == b); }
-	char& operator*() {
-		return *cpos;
-	}
-	Text_iterator& operator++() {
-		cpos++;
-		if (cpos == (*lpos).end()) {
-			lpos++;
-			cpos = (*lpos).begin();
-		}
-		return *this;
-	}
-	Text_iterator& operator--() {
-		if (cpos == (*lpos).begin()) {
-			lpos--;
-			cpos = (*lpos).end();
-		}
-		else cpos--;
-		return *this;
-	}
-};
-class Doc {
-public:
-	list<Line> line;
-
-	Text_iterator begin() {
-		return Text_iterator(line.begin(), (*line.begin()).begin());
-	};
-	Text_iterator end() {
-		auto last = line.end();
-		--last;//最后一行为空
-		return Text_iterator(last, (*last).end());
-	}
-	void erase_line(int n);
-	//构造函数添加空行
-	Doc() { line.push_back(Line{}); }
-};
-
-bool match(Text_iterator first,Text_iterator last,const string& s) {
-	for (auto p = s.begin(); p != s.end(); ) {
-		if (*first != *p) return false;
-		if (first == last) return false;
-		p++;
-		++first;
-	}
-	return true;
-}
-//这里不选择引用为什么呢？
-//因为可能用begin()传参数，是一个右值
-//要么用右值引用 要么直接赋值
-//如果是赋值的话，则复制一个局部变量
-//所以返回也不能是该局部变量的引用
-Text_iterator find_txt(Text_iterator first, Text_iterator last, const string& s) {
-	if (s.size() == 0) return last;//不支持查找空
-	char head = s[0];
-	while (first != last) {
-		if (*first == head && match(first, last, s)) break;
-		++first;
-	}
-	return first;
-}
-void Doc::erase_line(int n) {
+#include "../include/std_lib_facilities.h"
+namespace LSM {
+	//只进行内存分配的版本
+//不进行元素的构造析构
+	//为什么需要vector_base?
+	//原因在于reserve时，如果直接执行分配空间
+	//并调用元素初始化时，初始化这一阶段可能
+	//发生异常，进而造成内存没有回收
+	//而添加一个vector_base 类，在reserve时
+	//创建该对象用于分配内存，单独初始化
+	//一旦初始化异常，调用vector_base析构函数，释放内存
 	
-	auto p = line.begin();
-	p++;
-	advance(p,n);
-	line.erase(p);
-}
-istream& operator>>(istream& is, Doc& d) {
 
-	for (char ch; is.get(ch);) {
-		d.line.back().push_back(ch);
-		if (ch == '\n') d.line.push_back(Line{});
-	}
-	if (d.line.back().size()) d.line.push_back(Line{});
-	return is;
-}
-ostream& operator<<(ostream& os,   Doc& d) {
-	//for 迭代器运算 auto p的类型是*iterator
-	for (auto p : d) cout <<p;
-	return os;
-}
-/// <summary>
-/// 重写的advance
-/// </summary>
-/// <typeparam name="iterator"></typeparam>
-/// <param name="p"></param>
-/// <param name="n"></param>
-template<typename iterator>
-void advance(iterator& p,int n) {
-	if (n == 0) return;
-	else if (n > 0) {
-		while (n) {
-			p++;
-			n--;
+	//与之对应的方案就是new 数组既分配空间又初始化
+	//该方案需要用unique_ptr 来实现异常时回收内存
+	template<typename T, typename A>
+	struct Vector_base {
+		A alloc;
+		T* mem;
+		int sz;
+		int capacity;
+		Vector_base(const A& a, int n) :alloc{ a }, sz{ 0 }, capacity{ n }, mem{ alloc.allocate(n) } {};
+		~Vector_base() { alloc.deallocate(mem, capacity); }
+	};
+	//默认使用alloctor<T>作为
+	//要求Element<T>&& Allocator<A>
+	template<typename T, typename A = allocator<T>>
+	class Vector :private Vector_base<T, A> {
+		//继承了vector_base 作为私有成员
+	private:
+		A alloc;//默认构造
+	public:
+		using type_size = int;
+		using iterator = T*;
+		Vector(initializer_list<T> lst) :Vector_base<T,A>{alloc,int(lst.size())} {
+			copy(lst.begin(), lst.end(), this->mem);
+		};
+		Vector():Vector_base<T, A>(alloc, 0){
+			
+		};
+		~Vector() {};
+		void reserve(type_size newsize) {
+			if (newsize <= this->capacity) return;
+			//分配一个新的vector空间 sz=0 cap=newsize
+			//mem=alloc.allocate
+			Vector_base<T, A> b{ alloc,newsize };
+			//书上这里写反了三个参数是 b.mem b.mem+sz mem
+			//应该从mem拷贝到新的b.mem
+			uninitialized_copy(this->mem, this->mem + this->sz, b.mem);
+			//挨个元素调用析构函数
+			for (int i = 0; i < this->sz; i++) alloc.destroy(this->mem + i);
+			//将this指向b b指向this
+			swap<Vector_base<T, A>>(*this, b);
+			//出该作用域 b指向的this调用析构 释放元素占用的内存空间
 		}
-	}
-	else {
-		while (n) {
-			p--;
-			n++;
+		void resize(type_size newsize) {
+			reserve(newsize);
+			for (int i = *this->sz; i < newsize; i++) this->mem[i] = T();
+			this->sz = newsize;
 		}
+		void push_back(T t);
+		T& operator[](type_size idx) {
+			return this->mem[idx];
+		}
+
+	};
+	template<typename T,typename A >
+	void Vector<T, A>::push_back(T t) {
+		if (this->capacity == 0) reserve(8);
+		else if (this->sz == this->capacity) reserve(2 * this->capacity);
+		this->mem[this->sz] = t;
+		this->sz++;
 	}
-	return;
-}
+};
+
 int main() {
-	Doc d;
-	cin >> d;
-	const string tar{"nihao\nwoshi"};
-	cout <<(( find_txt(d.begin(), d.end(), tar)==d.end())?"没找到":"找到了");
-	return 0;
+	LSM::Vector<int> a;
+	a.push_back(4);
+	cout << a[0];
 }
