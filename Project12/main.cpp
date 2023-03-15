@@ -39,6 +39,12 @@ namespace LSM {
 			
 		};
 		~Vector() {};
+		iterator begin() const {
+			return this->mem;
+		}
+		iterator end()const {
+			return this->mem + this->sz;
+		}
 		void reserve(type_size newsize) {
 			if (newsize <= this->capacity) return;
 			//分配一个新的vector空间 sz=0 cap=newsize
@@ -53,6 +59,7 @@ namespace LSM {
 			swap<Vector_base<T, A>>(*this, b);
 			//出该作用域 b指向的this调用析构 释放元素占用的内存空间
 		}
+	
 		void resize(type_size newsize) {
 			reserve(newsize);
 			for (int i = *this->sz; i < newsize; i++) this->mem[i] = T();
@@ -62,9 +69,43 @@ namespace LSM {
 		T& operator[](type_size idx) {
 			return this->mem[idx];
 		}
+		void erase(iterator p);
+		void insert(iterator p, const T& val);
 
 	};
-	template<typename T,typename A >
+	template<typename T,typename A>
+	void Vector<T, A>::insert(iterator p, const T& val) {
+		//这里有bug不能先reserve 再 比较是不是end()
+		//因为传进来的可能是end() 但reserve后就不是了
+		int index = p - begin();
+		if (this->sz == this->capacity) {
+			if (this->capacity == 0) reserve(8);
+			else reserve(2 * this->capacity);
+		}
+		//如果执行了reserve，那么*end()肯定初始化了，但是如果没有
+		//这里就要执行construct了
+		alloc.construct(end());
+		//为什么这里要求出index又重新加上去呢？
+		//因为可能执行了reserve
+		iterator pp = begin() + index;
+		for (auto pos = end(); pos != pp; pos--) {
+			*pos = *(pos - 1);
+		}
+		*pp = val;
+		this->sz++;
+	}
+	template<typename T, typename A>
+	void Vector<T, A>::erase(iterator p) {
+		if (this->sz == 0) return;
+		if (p == end()) return;
+		for (auto pos = p; pos != end() - 1; pos++) {
+			*pos = *(pos + 1);
+		}
+		alloc.destroy(end() - 1);
+		this->sz--;
+	}
+
+	template<typename T,typename A>
 	void Vector<T, A>::push_back(T t) {
 		if (this->capacity == 0) reserve(8);
 		else if (this->sz == this->capacity) reserve(2 * this->capacity);
@@ -75,6 +116,10 @@ namespace LSM {
 
 int main() {
 	LSM::Vector<int> a;
-	a.push_back(4);
-	cout << a[0];
+	a.insert(a.end(), 1);
+	a.insert(a.end(), 2);
+	a.insert(a.end(), 3);
+	a.erase(a.end() - 3);
+	for (auto p : a) cout << p;
+	return 0;
 }
