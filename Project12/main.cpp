@@ -51,11 +51,17 @@ public:
 		--last;//最后一行为空
 		return Text_iterator(last, (*last).end());
 	}
-
+	void erase_line(int n);
 	//构造函数添加空行
 	Doc() { line.push_back(Line{}); }
 };
-
+void Doc::erase_line(int n) {
+	
+	auto p = line.begin();
+	p++;
+	advance(p,n);
+	line.erase(p);
+}
 istream& operator>>(istream& is, Doc& d) {
 
 	for (char ch; is.get(ch);) {
@@ -70,9 +76,33 @@ ostream& operator<<(ostream& os,   Doc& d) {
 	for (auto p : d) cout <<p;
 	return os;
 }
+/// <summary>
+/// 重写的advance
+/// </summary>
+/// <typeparam name="iterator"></typeparam>
+/// <param name="p"></param>
+/// <param name="n"></param>
+template<typename iterator>
+void advance(iterator& p,int n) {
+	if (n == 0) return;
+	else if (n > 0) {
+		while (n) {
+			p++;
+			n--;
+		}
+	}
+	else {
+		while (n) {
+			p--;
+			n++;
+		}
+	}
+	return;
+}
 int main() {
 	Doc d;
 	cin >> d;
+	d.erase_line(-1);
 	cout << d;
 	return 0;
 }
