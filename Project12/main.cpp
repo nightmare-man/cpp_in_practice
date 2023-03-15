@@ -55,6 +55,30 @@ public:
 	//构造函数添加空行
 	Doc() { line.push_back(Line{}); }
 };
+
+bool match(Text_iterator first,Text_iterator last,const string& s) {
+	for (auto p = s.begin(); p != s.end(); ) {
+		if (*first != *p) return false;
+		if (first == last) return false;
+		p++;
+		++first;
+	}
+	return true;
+}
+//这里不选择引用为什么呢？
+//因为可能用begin()传参数，是一个右值
+//要么用右值引用 要么直接赋值
+//如果是赋值的话，则复制一个局部变量
+//所以返回也不能是该局部变量的引用
+Text_iterator find_txt(Text_iterator first, Text_iterator last, const string& s) {
+	if (s.size() == 0) return last;//不支持查找空
+	char head = s[0];
+	while (first != last) {
+		if (*first == head && match(first, last, s)) break;
+		++first;
+	}
+	return first;
+}
 void Doc::erase_line(int n) {
 	
 	auto p = line.begin();
@@ -102,7 +126,7 @@ void advance(iterator& p,int n) {
 int main() {
 	Doc d;
 	cin >> d;
-	d.erase_line(-1);
-	cout << d;
+	const string tar{"nihao\nwoshi"};
+	cout <<(( find_txt(d.begin(), d.end(), tar)==d.end())?"没找到":"找到了");
 	return 0;
 }
