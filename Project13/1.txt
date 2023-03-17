@@ -1,12 +1,9 @@
-lsm 10 10
-qqq 10 10
-sd 1 2.3
-lsm 10 10
-qqq 10 10
-sd 1 2.3
-lsm 10 10
-qqq 10 10
-sd 1 2.3
-lsm 10 10
-qqq 10 10
-sd 1 2.3
+Crowds converged on Place de la Concorde in response to raising the retirement age from 62 to 64.
+
+The plans had sparked two months of heated political debate and strikes.
+
+Finally, Prime Minister Élisabeth Borne invoked article 49:3 of the constitution - allowing the government to avoid a vote in the Assembly.
+
+The decision was taken minutes before MPs were scheduled to vote on the controversial bill, because there was no guarantee of winning a majority.
+
+The move caused fury among opposition politicians. Many jeered the prime minister, sang La Marseillaise and held up signs of protest in parliament.
