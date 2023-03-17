@@ -1,23 +1,29 @@
-#include <iterator>
-#include <utility>
-#include <iostream>
-using namespace std;
-//注意重载的函数在哪个命名空间
+#include "../include/std_lib_facilities.h"
 namespace std {
-	// I am not happy that I had to put these stream operators in std namespace.
-	template<class A,class B>
-	ostream& operator<<(ostream& os, const pair<A, B>& p) {
-		return os << p.first << " " << p.second;
-	}
-	template<class A, class B>
-	istream& operator>>(istream& is, pair<A, B>&p ) {
-		return is >> p.first >> p.second;
+	using it = vector<int>::iterator;
+	it binary_search(it start, it end, const int val) {
+		int l = 0;
+		int r = end - start-1;
+		int tar_idx = end - start;
+		while (l <= r) {
+			int m = (l + r) / 2;
+			int this_val = *(start + m);
+			if (this_val == val) {
+				tar_idx = m;
+				break;
+			}
+			else if (this_val > val)r = m - 1;
+			else l = m + 1;;
+		}
+		return start + tar_idx;
 	}
 }
 int main() {
+	vector<int> v{ 2,3,56,6,4,6 };
 	
-	istream_iterator<pair<string,int>> in{ cin };
-	auto p = *in;
-	cout << p.first;
-	
+	sort(v.begin(), v.end());
+	for (const auto x : v) cout << x << " ";
+	auto p=binary_search(v.begin(), v.end(), 12);
+	if (p == v.end()) cout << "\nnot find" << endl;
+	else cout << "\nfind" << endl;
 }

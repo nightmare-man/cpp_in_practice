@@ -38,6 +38,7 @@ Revised August 3, 2020: a cleanup removing support for ancient compilers
 #include <forward_list>
 #include<vector>
 #include<unordered_map>
+#include <map>
 #include<algorithm>
 #include <array>
 #include <regex>
