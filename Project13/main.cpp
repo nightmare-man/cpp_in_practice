@@ -26,8 +26,11 @@ int main() {
 		if (!is) break;
 		x.push_back(p);
 	}
+	x.insert(x.begin(), Item{ "horse shoe",99,12.34 });
+	x.insert(x.begin(), Item{ "Canon S400",9988,499.95 });
+	x.erase(find_if(x.begin(), x.end(), [](Item i) {return i.name == "Canon S400"; }));
 	sort(x.begin(), x.end(), [](const Item& a, const Item& b) {
-		return a.iid < b.iid;
+		return a.value > b.value;
 		});
 	for (auto p : x) {
 		cout << p;
