@@ -1,26 +1,28 @@
 #include "../include/Simple_window.h"
 #include "../include/Graph.h"
+struct Mys {
+	explicit Mys(int x1, int y1) :x{ x1 }, y{ y1 } {};
+	int x;
+	int y;
+};
 int main() {
-	using namespace Graph_lib;
-	Point tl{ 100,100 };
-	Simple_window win{ tl,600,400,"canvas" };
-	//显示当前，等待点击button后继续执行
-	win.wait_for_button();
-
-	Axis xa{ Axis::x,Point{20,300},280,10,"x axis" };
-	xa.set_color(Color::red);
-	win.attach(xa);
-	win.set_label("A1");
-	win.wait_for_button();
-
-	Axis ya{ Axis::y,Point{20,300},280,10,"y axis" };
-	ya.set_color(Color::blue);
-	win.attach(ya);
-	win.set_label("A2");
-	win.wait_for_button();
-
-	Function sine{ sin,0,100,Point{20,150},1000,50,50 };
-	win.attach(sine);
-	win.set_label("A3");
+	Point tl{ 10,100 };
+	Simple_window win{ tl,500,500,"window" };
+	Lines x;
+	for (int i = 1; i < 25; i++) {
+		x.add( Point{0,i * 20},Point{500,i * 20} );
+	}
+	Lines y;
+	for (int i = 1; i < 25; i++) {
+		y.add(Point{ i * 20,0 }, Point{ i * 20,500 });
+	}
+	//隐式类型转换，
+	pair<int, int> a = { 1,2 };
+	//隐式类型转换
+	Mys s = { 1,2 };
+	x.set_color(Color::red);
+	y.set_color(Color::green);
+	win.attach(y);
+	win.attach(x);
 	win.wait_for_button();
 }
