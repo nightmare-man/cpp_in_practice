@@ -2,7 +2,7 @@
 #include<map>
 
 namespace Graph_lib {
-
+	using namespace std;
 void Shape::draw_lines() const
 {
 	if (color().visibility() && 1<points.size())	// draw sole pixel?
@@ -279,7 +279,7 @@ void Marks::draw_lines() const
 */
 
 
-std::map<string,Suffix::Encoding> suffix_map;
+std::map<std::string,Suffix::Encoding> suffix_map;
 
 int init_suffix_map()
 {
@@ -310,7 +310,8 @@ bool can_open(const string& s)
             // check if a file named s exists and can be opened for reading
 {
 	ifstream ff(s.c_str());
-	return ff;
+	bool ret = bool(ff);
+	return ret;
 }
 
 
@@ -347,7 +348,7 @@ Image::Image(Point xy, string s, Suffix::Encoding e)
 
 void Image::draw_lines() const
 {
-	if (fn.label()!="") fn.draw_lines();
+	if ( fn.label()!="") fn.draw_lines();
 
 	if (w&&h)
 		p->draw(point(0).x,point(0).y,w,h,cx,cy);

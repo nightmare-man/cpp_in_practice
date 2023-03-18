@@ -2,7 +2,7 @@
 #define GUI_GUARD
 
 #include "Point.h"
-#include <FL/Fl.H>
+#include "fltk.h"
 #include "Window.h"
 #include "Graph.h"
 //#include<vector>

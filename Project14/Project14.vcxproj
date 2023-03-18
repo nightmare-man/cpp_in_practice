@@ -132,6 +132,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\include\Graph.cpp" />
+    <ClCompile Include="..\include\GUI.cpp" />
+    <ClCompile Include="..\include\Simple_window.cpp" />
+    <ClCompile Include="..\include\Window.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

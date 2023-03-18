@@ -1,8 +1,8 @@
 #ifndef WINDOW_GUARD
 #define WINDOW_GUARD 1
 
-#include <FL/Fl.H>
-#include <FL/Fl_Window.H>
+#include "fltk.h"
+
 #include "std_lib_facilities.h"
 
 #include "Point.h"
