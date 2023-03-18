@@ -22,3 +22,6 @@
     
     
     5.set your project to include fltk.ALL ".lib" files included.All ".lib" files in "build/lib",and ".h" files in "FL".(for lib,you need set lib path and additional dependencies)
+### My work
+  reproduce example code, finish part practice I think important or interesting.At chapter14,clear mess code in gui interface given by author(too old and too mess,can't work dirctly)
+  
