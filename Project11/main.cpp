@@ -62,7 +62,8 @@ public:
 	//改变vector大小
 	//space可能变大但不可能变小
 	void resize(int newsize);
-	void push_back(T d);
+	void push_back( T& d);
+	//void push_back(const T&& d);
 	T& operator[](int idx);
 	const T& operator[](int idx)const;
 
@@ -75,12 +76,14 @@ template<typename T> const T& Myvector<T>::operator[](int idx)const {
 	if (idx < 0 || idx >= size) error("out of range");
 	return mem[idx];
 }
-template<typename T> void Myvector<T>::push_back(T d) {
+template<typename T> void Myvector<T>::push_back( T& d) {
+	cout << "左值引用" << endl;
 	if (space == 0) reserve(8);
 	else if (size == space) reserve(space * 2);
 	mem[size] = d;
 	size++;
 }
+
 template<typename T> void Myvector<T>::resize(int newsize) {
 	reserve(newsize);
 	//重新赋值0
@@ -124,9 +127,20 @@ template<typename T> Myvector<T> f1() {
 template<typename T> void f(Myvector<T> v) {
 	cout << v.Size();
 }
+string f() {
+	return string{ "nihao" };
+}
 int main() {
-	Myvector<Myvector<int>> p;
-	Myvector<int> a1{ 1,2,3 };
-	p.push_back(a1);
-	cout << p[0][0];
+	//左值：可以在表达式左边的值 ：即变量
+	//右值 ：只能在表达式右边的值 如字面量 函数返回值等零时对象
+	// 左值引用，如果是常量左值引用，则可以传入 右值，但是这样会
+	//延长右值的存活时间，实际是产生了一个临时变量（左值），发生了复制
+	//非常量左值引用，不允许传入右值
+	// 右值引用，不产生复制 直接引用	
+	Myvector<string> p;
+	string s{ "23" };
+	//如果没有定义右值引用
+	p.push_back(f());
+	p[0]="qq";
+	cout << p[0];
 }
