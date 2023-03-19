@@ -1,62 +1,9 @@
 #include "../include/Simple_window.h"
 #include "../include/Graph.h"
-#include "Box.h"
-namespace Graph_lib {
-	//三种继承方式 public private protect
-	//首先啊，这三种继承方式不影响派生类
-	//内部对基类的访问，即如果基类的成员为
-	//public protected 那不论那种继承方式
-	//都能访问基类的成员
-	//那影响什么呢？影响的是基类的成员被继承后的属性，的修饰符，即如果是private继承
-	//那基类的public protected成员在派生类中成为了private的 
-	// public继承则基类的public成员仍然是public的 protected仍然是protected的
-	//class默认private继承方式 需要手动加public
-	//而struct则是默认public继承方式
-	struct Arc : Shape {
-	public:
-		Arc(Point p1, int w1, int h1, double s1, double e1) :w{ w1 }, h{ h1 }, s{ s1 }, e{ e1 } {
-			add(p1);
-		}
-		void draw_lines()const;
-	private:
-		int w;
-		int h;
-		double s;
-		double e;
-	};
-	void Arc::draw_lines()const {
-		if (color().visibility()) {
-			fl_color(color().as_int());
-			fl_arc(point(0).x, point(0).y, w, h, s, e);
-		}
-	}
-}
-//attach是引用 add是传值
-//因此，当t出作用域被销毁时，会报错
-void f(Simple_window& win) {
-	using namespace Graph_lib;
-	Text t{ Point{100,100},"hello" };
-	t.set_color(Color::blue);
-	win.attach(t);
-	win.wait_for_button();
-}
+using namespace Graph_lib;
+//右值引用只能用在右值上，能实现移动语义和完美转发
+//而常量左值引用可以用在左值右值常量非常量
+//右值引用可以修改引用对象，常量左值引用不可以
 int main() {
-	using namespace Graph_lib;
-	Simple_window win{ Point{100,100},500,500,"window" };
-	Graph_lib::Box bbox{ Point{100,100},300,300,100,100 };
-	bbox.set_color(Color::red);
-	win.attach(bbox);
-	win.wait_for_button();
-	Open_polyline op{  };
-	op.add(Point{ 00,00 });
-	op.add(Point{ 150,200 });
-	op.set_color(Color::blue);
-	win.attach(op);
-	f(win);
-	win.wait_for_button();
-	//这里为啥不能用Shape(initializer_list)
-	//的构造函数，因为虽然是public继承，
-	//所以Shape()中的protected构造函数仍然是protected的，因此不能在类外直接访问
-	Open_polyline op{ Point{100,100},Point{100,200} };
 
 }
