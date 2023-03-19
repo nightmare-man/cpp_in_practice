@@ -33,9 +33,12 @@ namespace Graph_lib {
 }
 
 int main() {
+	using namespace Graph_lib;
 	Simple_window win{ Point{100,100},500,500,"window" };
 	Graph_lib::Box bbox{ Point{100,100},300,300,100,100 };
 	bbox.set_color(Color::red);
 	win.attach(bbox);
 	win.wait_for_button();
+
+
 }
