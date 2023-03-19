@@ -136,7 +136,11 @@
     <ClCompile Include="..\include\GUI.cpp" />
     <ClCompile Include="..\include\Simple_window.cpp" />
     <ClCompile Include="..\include\Window.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Box.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
