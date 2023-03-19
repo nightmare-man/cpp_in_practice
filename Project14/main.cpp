@@ -2,16 +2,13 @@
 #include "../include/Graph.h"
 #include "Box.h"
 namespace Graph_lib {
-	//三种继承方式 public private protected
-	//继承的默认规则，private
-	//派生类不能访问 基类中的private成员，但可以访问public protected成员
-	//但派生类继承的基类的public protected成员 也变为private
-	//即不能 用"派生类的对象"访问基类的public protected成员
-
-	//如果这里不加public 那么默认private继承，那么win.attach(arc)就报错，因为无法用arc来访问基类的public protected对象了，导致attach内部无法工作
-	//因此需要用public修饰
-	//struct默认是public继承 class是默认private继承
-	//前者默认成员是public 后者默认private
+	//三种继承方式 public private protect
+	//首先啊，这三种继承方式不影响派生类
+	//内部对基类的访问，即如果基类的成员为
+	//public protected 那不论那种继承方式
+	//都能访问基类的成员
+	//那影响什么呢？影响的是基类的成员被继承后的属性，的修饰符，即如果是private继承
+	//那基类的public protected成员在派生类中成为了private的 
 	struct Arc : Shape {
 	public:
 		Arc(Point p1, int w1, int h1, double s1, double e1) :w{ w1 }, h{ h1 }, s{ s1 }, e{ e1 } {
@@ -54,4 +51,6 @@ int main() {
 	win.attach(op);
 	f(win);
 	win.wait_for_button();
+	Open_polyline op{ Point{100,100},Point{100,200} };
+
 }

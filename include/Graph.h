@@ -117,7 +117,9 @@ typedef double Fct(double);
 class Shape  {	// deals with color and style, and holds sequence of lines
 protected:
 	Shape() { }
-	Shape(initializer_list<Point> lst);  // add() the Points to this Shape
+	Shape(initializer_list<Point> lst) {
+	
+	} // add() the Points to this Shape
 
 //	Shape() : lcolor(fl_color()),
 //		ls(0),
