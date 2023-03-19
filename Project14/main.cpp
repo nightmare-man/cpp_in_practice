@@ -31,7 +31,15 @@ namespace Graph_lib {
 		}
 	}
 }
-
+//attach是引用 add是传值
+//因此，当t出作用域被销毁时，会报错
+void f(Simple_window& win) {
+	using namespace Graph_lib;
+	Text t{ Point{100,100},"hello" };
+	t.set_color(Color::blue);
+	win.attach(t);
+	win.wait_for_button();
+}
 int main() {
 	using namespace Graph_lib;
 	Simple_window win{ Point{100,100},500,500,"window" };
@@ -39,6 +47,11 @@ int main() {
 	bbox.set_color(Color::red);
 	win.attach(bbox);
 	win.wait_for_button();
-
-
+	Open_polyline op{  };
+	op.add(Point{ 00,00 });
+	op.add(Point{ 150,200 });
+	op.set_color(Color::blue);
+	win.attach(op);
+	f(win);
+	win.wait_for_button();
 }
