@@ -9,47 +9,49 @@ namespace Graph_lib {
 	class Immobile_Cicle :public Circle {
 	public:
 		Immobile_Cicle(const Point& p, int r) :Circle(p, r) {};
-		void move(int dx,int dy)override {
+		void move(int dx, int dy)override {
 			return;
 		}
 	};
-	class Binary_tree :public Shape{
+	class Binary_tree :public Shape {
 	public:
-		Binary_tree(Point p, int level, int radius, int lengh, double degree) :l{ level }, r{ radius }, len{ lengh }, d{degree} {
+		Binary_tree(Point p, int level, int radius, int lengh, double degree) :l{ level }, r{ radius }, len{ lengh }, d{ degree } {
 			add(p);
 			int amount = int(std::pow(2, level - 1)) - 1;
 			int now_level = 0;
 			for (int cnt = 0; cnt < amount; cnt++) {
 				if (cnt == int(pow(2, now_level) - 1)) now_level++;
-				get_next_points(point(cnt),int(lengh*pow(0.8,now_level)), degree * pow(0.6, now_level));
+				get_next_points(point(cnt), int(lengh * pow(0.8, now_level)), degree * pow(0.6, now_level));
 			}
 		}
-	
+		virtual void draw_node(Point center, int width, int heigh) const {
+			fl_circle(center.x, center.y, width);
+		}
 		void draw_lines() const override {
 			if (l == 1) {
 				fl_arc(point(0).x, point(0).y, r, r, 0, 360);
 				return;
 			}
 			int amount = int(std::pow(2, l - 1)) - 1;
-			
+
 			for (int cnt = 0; cnt < amount; cnt++) {
 				Point mid = point(cnt);
 				Point left = point((cnt + 1) * 2 - 1);
 				Point right = point((cnt + 1) * 2);
-				
-				fl_circle(left.x, left.y, r);
-				fl_circle(right.x,right.y, r);
-				fl_line(mid.x,mid.y ,left.x,left.y);
-				fl_line(mid.x,mid.y, right.x, right.y);
+				draw_node(mid, r, r);
+				draw_node(left, r, r);
+				draw_node(right, r, r);
+				fl_line(mid.x, mid.y, left.x, left.y);
+				fl_line(mid.x, mid.y, right.x, right.y);
 
 			}
 		}
-	protected:
+	private:
 		int l;//层数
 		int r;//节点半径
 		int len;//连线长度
 		double d;//开合角度
-		void get_next_points(Point p,int lengh,double degree) {
+		void get_next_points(Point p, int lengh, double degree) {
 			int x_span = lengh * std::sin(degree * _Pi / 360);
 			int y_span = lengh * std::cos(degree * _Pi / 360);
 			add(Point{ p.x - x_span,p.y + y_span });
@@ -58,26 +60,9 @@ namespace Graph_lib {
 	};
 	class Binary_tree_angle :public Binary_tree {
 	public:
-		Binary_tree_angle(Point p, int level, int radius, int lengh, double degree):Binary_tree(p,level,radius,lengh,degree) {};
-		void draw_lines()const override {
-			if (l == 1) {
-				fl_arc(point(0).x, point(0).y, r, r, 0, 360);
-				return;
-			}
-			int amount = int(std::pow(2, l - 1)) - 1;
-
-			for (int cnt = 0; cnt < amount; cnt++) {
-				Point mid = point(cnt);
-				Point left = point((cnt + 1) * 2 - 1);
-				Point right = point((cnt + 1) * 2);
-				fl_rect(mid.x -r, mid.y-r, r+r, r + r);
-				fl_rect(left.x - r, left.y - r, r + r, r + r);
-				fl_rect(right.x - r, right.y - r, r + r, r + r);
-				
-				fl_line(mid.x, mid.y, left.x, left.y);
-				fl_line(mid.x, mid.y, right.x, right.y);
-
-			}
+		Binary_tree_angle(Point p, int level, int radius, int lengh, double degree) :Binary_tree(p, level, radius, lengh, degree) {};
+		void draw_node(Point center, int width, int heigh) const override {
+			fl_rect(center.x - width, center.y - heigh, 2 * width, 2 * heigh);
 		}
 	};
 }
@@ -94,5 +79,5 @@ int main() {
 	bt.set_color(Color::red);
 	win.attach(bt);
 	win.wait_for_button();
-	
+
 }
