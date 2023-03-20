@@ -5,54 +5,39 @@
 #else
 #include "../include/std_lib_facilities.h"
 #endif
-class B {
+class B1 {
 public:
-	virtual void f() const {
-		cout << "B::F()\n";
-	}
-	void g()const {
-		cout << "B::g()\n";
+	virtual void vf() {
+		cout << "B1::vf\n";
+	};
+	void f() {
+		cout << "B1::f\n";
+	};
+};
+class D1 :public B1 {
+public:
+	void vf()override {
+		cout << "D1::vf\n";
+	};
+	void f() {
+		cout << "D1::f\n";
 	}
 };
-class D:public B {
-public:
-	//添加override 显示表明重写 覆盖
-	 void f() const override {
-		cout << "D::F()\n";
-	}
-	void g()const {
-		cout << "D::g()\n";
-	}
-};
-class DD:public D {
-public:
-	//DD继承了D D继承了B  当dd作为B的对象是，用的是D重写的f
-	void f()  {
-		cout << "DD::F()\n";
-	}
-	void g()const {
-		cout << "DD::g()\n";
-	}
-};
-void call(const B& b) {
-	b.f();
-	b.g();
-}
 int main() {
-	B b;
-	D d;
-	DD dd;
+	//纯虚函数才是抽象类 无法实例化
+	//这儿只有一个虚函数
+	B1 b;
+	b.vf();
+	b.f();
+	
+	D1 d;
+	d.vf();
+	d.f();//D1::f
 
-	call(b);//B::f B::g
-	call(d);//D::f B::g
-	call(dd);//B::f B::g //wrong D::f B::g 原因是继承了D的f
-
-	b.f(); //B::f
-	b.g();//B::g
-
-	d.f();//D::f
-	d.g();//D::g
-
-	dd.f();//DD::f
-	dd.g();//DD::g
+	B1& b1 = d;
+	//实际是一个d因此调用d对vf的重载
+	//引用实际是一个指针常量
+	b1.vf(); // 除了虚函数或按照其实际派生类型
+	//来执行，其余函数都看其按照什么类型解释
+	b1.f();//D1::f  //错了这儿是B1::f
 }
