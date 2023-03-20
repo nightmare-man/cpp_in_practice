@@ -1,32 +1,58 @@
 
-class A {
+#ifdef Graph
+#include "../include/Simple_window.h"
+#include "../include/Graph.h"
+#else
+#include "../include/std_lib_facilities.h"
+#endif
+class B {
 public:
-	//A(const A& x) = delete;
-	//Shape& operator=(const A& x) = delete;
-
-	A() :value{0} {};
-	A(int x) :value{ x } {};
-private:
-	int value;
+	virtual void f() const {
+		cout << "B::F()\n";
+	}
+	void g()const {
+		cout << "B::g()\n";
+	}
 };
-class BBBB :public A {
-
+class D:public B {
+public:
+	//添加override 显示表明重写 覆盖
+	 void f() const override {
+		cout << "D::F()\n";
+	}
+	void g()const {
+		cout << "D::g()\n";
+	}
 };
-class CCCC :public A {
-
+class DD:public D {
+public:
+	//DD继承了D D继承了B  当dd作为B的对象是，用的是D重写的f
+	void f()  {
+		cout << "DD::F()\n";
+	}
+	void g()const {
+		cout << "DD::g()\n";
+	}
 };
+void call(const B& b) {
+	b.f();
+	b.g();
+}
 int main() {
-	BBBB bb;
-	
-	CCCC cc;
-	
-	//为什么要禁用拷贝赋值 和 拷贝初始化？
-	// 防止截断（即虽然B和C都继承A 但是各自还有独特的私有成员）
-	//直接拷贝会出问题，因此删除了基类的拷贝
-	//真想在派生类之间拷贝怎么办呢？自己实现clone函数（基类实现）
-	//即使开启拷贝赋值只能都转化为基类行后再拷贝
-	A a = A{ cc };
-	A b = A{ bb };
-	a = b;
-	
+	B b;
+	D d;
+	DD dd;
+
+	call(b);//B::f B::g
+	call(d);//D::f B::g
+	call(dd);//B::f B::g //wrong D::f B::g 原因是继承了D的f
+
+	b.f(); //B::f
+	b.g();//B::g
+
+	d.f();//D::f
+	d.g();//D::g
+
+	dd.f();//DD::f
+	dd.g();//DD::g
 }
